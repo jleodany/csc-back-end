@@ -1,0 +1,15 @@
+{
+  "name": "csc-back",
+  "version": "1.0.0",
+  "description": "csc-app back-end",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "csc-team",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+    "mysql": "^2.16.0"
+  }
+}

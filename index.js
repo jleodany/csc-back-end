@@ -16,6 +16,7 @@ var mysql = require("mysql")
 //   }
 // });
 
+
 app.get("/test", function (req, res) {
   console.log("Petición Recibida");
   res.send("HELLOW FRONT");

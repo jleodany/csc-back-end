@@ -1,6 +1,8 @@
 var express = require("express");
+var bodyParser = require('body-parser');
 var app = express();
-var mysql = require("mysql")
+
+var mysql = require("mysql");
 // var connection = mysql.createConnection({
 //   host: 'localhost',
 //   user: 'root',
@@ -16,10 +18,17 @@ var mysql = require("mysql")
 //   }
 // });
 
+app.use(bodyParser.json());
+
 
 app.get("/test", function (req, res) {
   console.log("Petición Recibida");
   res.send("HELLOW FRONT");
+});
+
+app.post("/login", function (req, res){
+  console.log("Your Params => ", req.body);
+  res.send("OK");
 })
 
 app.listen(3080, () => {

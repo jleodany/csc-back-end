@@ -1,4 +1,4 @@
-const { getUserByUserName } = require('./globals/common')
+const { getUserByUserName, createSession } = require('./globals/common')
 
 const mysql = require("mysql");
 
@@ -20,8 +20,8 @@ exports.registerUser = async/*<--- importante para usar 'await'*/ (req, res) => 
     const connection = mysql.createConnection({
       host: 'localhost',
       user: 'root',
-      password: '',
-      database: 'csc'
+      database: 'csc',
+      port: '3001'
     });
     connection.connect(function (error) {
       if (error) {
@@ -52,7 +52,8 @@ exports.getUsers = (req, res) => {
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'csc'
+    database: 'csc',
+    port: '3001'
   });
   connection.query('SELECT * from users', function (error, result, fields) {
     if (error) {
@@ -71,10 +72,15 @@ exports.login = async (req, res) => {
   const pass = req.body.pass;
   const dbUser = await getUserByUserName(userName)
   if (dbUser.length == 0) {
-    return res.json({ status: 400, message: "El Usuario Ingresado no Existe", succes: false })
+    return res.json({ status: 400, message: "El Usuario Ingresado no Existe.", succes: false })
   } else if (dbUser[0].pass != pass) {
-    return res.json({ status: 400, message: "Contraseña Inválida", succes: false })
+    return res.json({ status: 400, message: "Contraseña Inválida.", succes: false })
   } else {
-    return res.json({ status: 200, message: "Usuario Logueado Correctamente", succes: true })
+    const token = await createSession(dbUser[0].id)
+    if(token){
+      return res.json({ status: 200, message: "Usuario Logueado Correctamente.", succes: true, data: {token: token} })
+    } else {
+      return res.json({ status: 400, message: "Ocurrió un Error Al Iniciar Sesión, Por Favor Inténtelo Nuevamente.", succes: false })
+    }
   }
 }

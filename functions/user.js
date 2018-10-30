@@ -1,14 +1,17 @@
-const { getUserByUserName, createSession } = require('./globals/common')
-
+const { getUserByUserName, createSession, getUserByToken } = require('./globals/common')
+const randomToken = require('random-token');
+const bcrypt = require('bcrypt');
 const mysql = require("mysql");
 
-exports.registerUser = async/*<--- importante para usar 'await'*/ (req, res) => {
+exports.registerUser = async/*<--- importante para usar 'await'*/(req, res) => {
   const userName = req.body.userName;
   const pass = req.body.pass;
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
   const email = req.body.email;
   const type = req.body.type;
+  const myPlaintextPassword = randomToken(10)
+  const saltRounds = Math.random() * (11 - 0) + 0;
   const dbUser = await getUserByUserName(userName)
   if (!userName || !pass || !firstName || !lastName || !email || !type) {
     return res.json({ status: 400, message: "Faltan Datos Obligatorios", succes: false });
@@ -16,7 +19,20 @@ exports.registerUser = async/*<--- importante para usar 'await'*/ (req, res) => 
   if (dbUser.length > 0) {
     return res.json({ status: 400, message: "Usuario Ya Registrado", succes: false })
   } else {
-    const values = [[null, userName, pass, firstName, lastName, email, type]]
+    const hashedPass = bcrypt.hashSync(pass + myPlaintextPassword, saltRounds)
+    let splittedSecretWord = ''
+    for (let x = 0; x < myPlaintextPassword.length; x++) {
+      if (splittedSecretWord == '') {
+        splittedSecretWord = myPlaintextPassword.charAt(x).charCodeAt()
+      } else {
+        splittedSecretWord = splittedSecretWord + '.' + myPlaintextPassword.charAt(x).charCodeAt()
+      }
+    }
+    console.log(splittedSecretWord)
+    const passWordToken = Buffer(JSON.stringify({ word: hashedPass, secretWord: splittedSecretWord }), 'binary').toString('base64')
+    // const passWordToken = Buffer(JSON.stringify({ word: hashedPass, secretWord: splittedSecretWord }), 'binary')
+    console.log('decoded: ', new Buffer(passWordToken, 'base64').toString("ascii"))
+    const values = [[null, userName, passWordToken, firstName, lastName, email, type]]
     const connection = mysql.createConnection({
       host: 'localhost',
       user: 'root',
@@ -47,7 +63,8 @@ exports.registerUser = async/*<--- importante para usar 'await'*/ (req, res) => 
   }
 }
 
-exports.getUsers = (req, res) => {
+exports.getUsers = async (req, res) => {
+  const token = req.query.token
   const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -71,16 +88,45 @@ exports.login = async (req, res) => {
   const userName = req.body.userName;
   const pass = req.body.pass;
   const dbUser = await getUserByUserName(userName)
+  const passField = JSON.parse(new Buffer(dbUser[0].pass, 'base64').toString("ascii"))
+  let myPlaintextPassword = ''
+  const splittedSecretWord = passField.secretWord.split('.')
+  splittedSecretWord.forEach(field => {
+    myPlaintextPassword = myPlaintextPassword + String.fromCharCode(parseInt(field))
+  });
+  console.log(passField.word)
   if (dbUser.length == 0) {
     return res.json({ status: 400, message: "El Usuario Ingresado no Existe.", succes: false })
-  } else if (dbUser[0].pass != pass) {
+  } else if (!bcrypt.compareSync(pass + myPlaintextPassword, passField.word)) {
     return res.json({ status: 400, message: "Contraseña Inválida", succes: false })
   } else {
     const token = await createSession(dbUser[0].id)
-    if(token){
-      return res.json({ status: 200, message: "Usuario Logueado Correctamente.", succes: true, data: {token: token} })
+    if (token) {
+      return res.json({ status: 200, message: "Usuario Logueado Correctamente.", succes: true, data: { token: token } })
     } else {
       return res.json({ status: 400, message: "Ocurrió un Error Al Iniciar Sesión, Por Favor Inténtelo Nuevamente.", succes: false })
     }
   }
+}
+
+exports.logout = async (req, res) => {
+  const token = req.query.token
+  const connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    database: 'csc',
+    port: '3001'
+  })
+  console.log(token)
+  connection.query('DELETE FROM session WHERE session.token = ?',
+    token, function (error, result, fields) {
+      if (error) {
+        connection.end()
+        console.log(error)
+        return res.status(400).end()
+      } else {
+        connection.end()
+        return res.status(200).end()
+      }
+    })
 }

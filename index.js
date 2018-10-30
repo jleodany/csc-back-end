@@ -1,6 +1,8 @@
 const registerUser = require("./functions/user").registerUser
+const getUserByToken = require('./functions/globals/common').getUserByToken
 const getUsers = require("./functions/user").getUsers
 const login = require("./functions/user").login
+const logout = require("./functions/user").logout
 var express = require("express");
 var bodyParser = require('body-parser');
 var app = express();
@@ -11,38 +13,38 @@ const usersTemp = [
   { userName: 'JoseV', passWord: '10398563' },
 ]
 
+const validateUser = async (req, res, next) => {
+  console.log('req.method: ', req.method)
+  console.log('req.url: ', req.originalUrl)
+  let token
+  // if(req.originalUrl != '/login'){
+  //   if(req.method == 'POST'){
+  //     token = req.body.token
+  //   } else {
+  //     token = req.query.token
+  //   }
+  //   const userInfo = await getUserByToken(token)
+  //   if(!userInfo){
+  //     return res.json({ status: 400, message: "Su token ha expirado", succes: false })
+  //   }
+  //   if(
+  //     ( req.originalUrl == '/registerUser' || 
+  //       req.originalUrl.includes('/getUsers')) && 
+  //       userInfo.type != 1
+  //   ) {
+  //     return res.json({ status: 400, message: "Usted no es un Administrador", succes: false })
+  //   }
+  // }
+  next()
+}
+
 app.use(bodyParser.json());
 
-
-app.get("/test", function (req, res) {
-  console.log("Petición Recibida");
-  res.send("HELLOW FRONT");
-});
-
-// app.post("/login", function (req, res) {
-//   const userRequest = req.body;
-//   console.log("Your Params => ", userRequest);
-//   console.log("Existing Array => ", usersTemp);
-//   let found = false;
-//   usersTemp.forEach(user => {
-//     console.log("user.userName == userRequest.userName", user.userName, userRequest.userName);
-//     console.log("user.passWord == userRequest.passWord", user.passWord, userRequest.passWord);
-//     if (user.userName == userRequest.userName &&
-//       user.passWord == userRequest.passWord) {
-//       found = true;
-//     }
-//   });
-//   res.setHeader('Content-Type', 'application/json');
-//   if(found){
-//     res.status(200);
-//     res.send("Logueado Correctamente");
-//   } else {
-//     res.status(404);
-//     res.send("Error Ingresando usuario o contrase*a");
-//   }
-// })
+app.use(validateUser);
 
 app.post("/login", login)
+
+app.get("/logout", logout)
 
 app.post("/registerUser", registerUser)
 

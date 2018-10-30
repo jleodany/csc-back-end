@@ -1,8 +1,45 @@
 const mysql = require("mysql");
 
+function getUserByToken(token) {
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection({
+      host: 'localhost',
+      user: 'root',
+      password: '',
+      database: 'csc',
+      port: '3001'
+    });
+    connection.query('SELECT * FROM session WHERE session.token = ?',
+      token, function (error, result, fields) {
+        if (error) {
+          connection.end();
+          reject(error);
+        } else {
+          console.log(result)
+          if(result.length == 0 || !result || result == []){
+            resolve(false)
+          } else {
+            console.log('passed')
+            connection.query('SELECT * FROM users WHERE users.id = ?',
+            result[0].user, function(error, userInfo, fields){
+              if(error){
+                connection.end();
+                reject(error)
+              } else {
+                connection.end()
+                resolve(userInfo[0]);
+              }
+            })
+          }
+        }
+      })
+  })
+}
+module.exports.getUserByToken = getUserByToken
+
 function getUserByUserName(userNameSent) {
   console.log("Looking for ", userNameSent)
-  return new Promise( (resolve, reject) => {
+  return new Promise((resolve, reject) => {
     const connection = mysql.createConnection({
       host: 'localhost',
       user: 'root',
@@ -38,16 +75,16 @@ function createSession(userID) {
       database: 'csc',
       port: '3001'
     });
-    connection.query('INSERT INTO session (token, user) VALUES?', [values], 
+    connection.query('INSERT INTO session (token, user) VALUES?', [values],
       function (error, result) {
-        if(error){
+        if (error) {
           connection.end()
           resolve(false)
         } else {
           connection.end()
           resolve(token)
         }
-    })
+      })
   })
 }
 module.exports.createSession = createSession;

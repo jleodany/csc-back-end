@@ -60,7 +60,7 @@ exports.getUsers = (req, res) => {
       throw error;
     } else {
       console.log(result);
-      return res.json(result)
+      return res.json({ status: 200, message: "Usuarios Consultados Correctamente.", succes: true, data: result })
     }
   })
   connection.end();
@@ -74,7 +74,7 @@ exports.login = async (req, res) => {
   if (dbUser.length == 0) {
     return res.json({ status: 400, message: "El Usuario Ingresado no Existe.", succes: false })
   } else if (dbUser[0].pass != pass) {
-    return res.json({ status: 400, message: "Contraseña Inválida.", succes: false })
+    return res.json({ status: 400, message: "Contraseña Inválida", succes: false })
   } else {
     const token = await createSession(dbUser[0].id)
     if(token){

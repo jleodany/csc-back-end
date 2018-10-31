@@ -88,23 +88,25 @@ exports.login = async (req, res) => {
   const userName = req.body.userName;
   const pass = req.body.pass;
   const dbUser = await getUserByUserName(userName)
-  const passField = JSON.parse(new Buffer(dbUser[0].pass, 'base64').toString("ascii"))
-  let myPlaintextPassword = ''
-  const splittedSecretWord = passField.secretWord.split('.')
-  splittedSecretWord.forEach(field => {
-    myPlaintextPassword = myPlaintextPassword + String.fromCharCode(parseInt(field))
-  });
-  console.log(passField.word)
   if (dbUser.length == 0) {
-    return res.json({ status: 400, message: "El Usuario Ingresado no Existe.", succes: false })
-  } else if (!bcrypt.compareSync(pass + myPlaintextPassword, passField.word)) {
-    return res.json({ status: 400, message: "Contraseña Inválida", succes: false })
+    return res.json({ status: 400, message: "El Usuario Ingresado no Existe", succes: false })
   } else {
-    const token = await createSession(dbUser[0].id)
-    if (token) {
-      return res.json({ status: 200, message: "Usuario Logueado Correctamente.", succes: true, data: { token: token } })
+    const passField = JSON.parse(new Buffer(dbUser[0].pass, 'base64').toString("ascii"))
+    let myPlaintextPassword = ''
+    const splittedSecretWord = passField.secretWord.split('.')
+    splittedSecretWord.forEach(field => {
+      myPlaintextPassword = myPlaintextPassword + String.fromCharCode(parseInt(field))
+    });
+    console.log(passField.word)
+    if (!bcrypt.compareSync(pass + myPlaintextPassword, passField.word)) {
+      return res.json({ status: 400, message: "Contraseña Inválida", succes: false })
     } else {
-      return res.json({ status: 400, message: "Ocurrió un Error Al Iniciar Sesión, Por Favor Inténtelo Nuevamente.", succes: false })
+      const token = await createSession(dbUser[0].id)
+      if (token) {
+        return res.json({ status: 200, message: "Usuario Logueado Correctamente", succes: true, data: { token: token } })
+      } else {
+        return res.json({ status: 400, message: "Ocurrió un Error Al Iniciar Sesión, Por Favor Inténtelo Nuevamente.", succes: false })
+      }
     }
   }
 }

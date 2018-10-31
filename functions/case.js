@@ -2,21 +2,24 @@
 const mysql = require("mysql");
 
 exports.registerCase = async (req, res) =>  {
-  const { asunto, descripcion, userInfo } = req.body
+  const { asunto, descripcion, type, userInfo } = req.body
   const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     database: 'csc',
     port: '3001'
   })
-  const values = [[null, asunto, descripcion, new Date.getTime(), userInfo.id, null,]]
-  connection.query('INSERT INTO casos (id, asunto, description, f_apertura, user, operador, status) VALUES ?',
+  const date = new Date().setHours(0, 0, 0, 0)
+  const values = [[null, asunto, descripcion, date, userInfo.id, null, 'PENDIENTE', type]]
+  console.log(values)
+  connection.query('INSERT INTO casos (idCaso, asunto, descripcion, f_apertura, user, operador, status, type) VALUES?',
     [values], function(error, result) {
       if(error){
+        console.log('ERROR', error)
         return res.json({ status: 400, message: "Error en Inserción de Datos", succes: false })
       } else {
         connection.end()
-        return res.json({ status: 200, message: "Case Aperturado Exitosamente", succes: true });
+        return res.json({ status: 200, message: "Caso Aperturado Exitosamente", succes: true });
       }
     })
 }

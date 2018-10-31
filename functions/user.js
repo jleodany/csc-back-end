@@ -76,7 +76,7 @@ exports.getUsers = async (req, res) => {
     if (error) {
       throw error;
     } else {
-      console.log(result);
+      console.log("req.body.userInfo", req.body.userInfo);
       return res.json({ status: 200, message: "Usuarios Consultados Correctamente.", succes: true, data: result })
     }
   })

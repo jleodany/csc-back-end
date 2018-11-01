@@ -30,11 +30,10 @@ const validateUser = async (req, res, next) => {
       return res.json({ status: 400, message: "Su token ha expirado", succes: false })
     }
     console.log("userInfo: ", userInfo)
+    console.log((req.originalUrl == '/registerUser' || req.originalUrl.includes('/getUsers')) && userInfo.type != 1)
     req.body.userInfo = userInfo
     if(
-      ( req.originalUrl == '/registerUser' || 
-        req.originalUrl.includes('/getUsers')) && 
-        userInfo.type != 1
+      ( req.originalUrl == '/registerUser' || req.originalUrl.includes('/getUsers')) && userInfo.type != 1
     ) {
       return res.json({ status: 400, message: "Usted no es un Administrador", succes: false })
     }
@@ -58,6 +57,10 @@ app.post('/registerCase', registerCase)
 app.get("/getUsers", getUsers)
 
 app.post("/getCases", getCases)
+
+app.get('/getUserData', function(req, res){
+  return res.json({ status: 200, message: "Datos Consultados Exitosamente", succes: true, data: req.body.userInfo })
+})
 
 app.listen(3080, () => {
   console.log("Server running on port 3080");

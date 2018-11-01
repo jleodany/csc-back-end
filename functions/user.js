@@ -36,8 +36,8 @@ exports.registerUser = async/*<--- importante para usar 'await'*/(req, res) => {
     const connection = mysql.createConnection({
       host: 'localhost',
       user: 'root',
-      database: 'csc',
-      port: '3306'
+      database: 'csc3',
+      port: '3001'
     });
     connection.connect(function (error) {
       if (error) {
@@ -69,8 +69,8 @@ exports.getUsers = async (req, res) => {
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'csc',
-    port: '3306'
+    database: 'csc3',
+    port: '3001'
   });
   connection.query('SELECT * from users', function (error, result, fields) {
     if (error) {
@@ -103,7 +103,7 @@ exports.login = async (req, res) => {
     } else {
       const token = await createSession(dbUser[0].id)
       if (token) {
-        return res.json({ status: 200, message: "Usuario Logueado Correctamente", succes: true, data: { token: token } })
+        return res.json({ status: 200, message: "Usuario Logueado Correctamente", succes: true, data: { token: token, userInfo: {id: dbUser[0].id, type: dbUser[0].type} } })
       } else {
         return res.json({ status: 400, message: "Ocurrió un Error Al Iniciar Sesión, Por Favor Inténtelo Nuevamente.", succes: false })
       }
@@ -116,8 +116,8 @@ exports.logout = async (req, res) => {
   const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    database: 'csc',
-    port: '3306'
+    database: 'csc3',
+    port: '3001'
   })
   console.log(token)
   connection.query('DELETE FROM session WHERE session.token = ?',

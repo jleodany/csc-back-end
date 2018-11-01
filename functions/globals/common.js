@@ -7,7 +7,7 @@ function getUserByToken(token) {
       user: 'root',
       password: '',
       database: 'csc',
-      port: '3001'
+      port: '3306'
     });
     connection.query('SELECT * FROM session WHERE session.token = ?',
       token, function (error, result, fields) {
@@ -45,7 +45,7 @@ function getUserByUserName(userNameSent) {
       user: 'root',
       password: '',
       database: 'csc',
-      port: '3001'
+      port: '3306'
     });
     connection.query('SELECT * FROM users WHERE users.userName = ?',
       userNameSent, function (error, result, fields) {
@@ -73,7 +73,7 @@ function createSession(userID) {
       user: 'root',
       password: '',
       database: 'csc',
-      port: '3001'
+      port: '3306'
     });
     connection.query('INSERT INTO session (token, user) VALUES?', [values],
       function (error, result) {

@@ -4,6 +4,7 @@ const getUsers = require("./functions/user").getUsers
 const login = require("./functions/user").login
 const logout = require("./functions/user").logout
 const registerCase = require("./functions/case").registerCase
+const getCases = require("./functions/case").getCases
 var express = require("express");
 var bodyParser = require('body-parser');
 var app = express();
@@ -55,6 +56,8 @@ app.post("/registerUser", registerUser)
 app.post('/registerCase', registerCase)
 
 app.get("/getUsers", getUsers)
+
+app.post("/getCases", getCases)
 
 app.listen(3080, () => {
   console.log("Server running on port 3080");

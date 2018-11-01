@@ -37,7 +37,7 @@ exports.registerUser = async/*<--- importante para usar 'await'*/(req, res) => {
       host: 'localhost',
       user: 'root',
       database: 'csc',
-      port: '3001'
+      port: '3306'
     });
     connection.connect(function (error) {
       if (error) {
@@ -70,7 +70,7 @@ exports.getUsers = async (req, res) => {
     user: 'root',
     password: '',
     database: 'csc',
-    port: '3001'
+    port: '3306'
   });
   connection.query('SELECT * from users', function (error, result, fields) {
     if (error) {
@@ -117,7 +117,7 @@ exports.logout = async (req, res) => {
     host: 'localhost',
     user: 'root',
     database: 'csc',
-    port: '3001'
+    port: '3306'
   })
   console.log(token)
   connection.query('DELETE FROM session WHERE session.token = ?',

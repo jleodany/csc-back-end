@@ -7,7 +7,7 @@ exports.registerCase = async (req, res) =>  {
     host: 'localhost',
     user: 'root',
     database: 'csc',
-    port: '3001'
+    port: '3306'
   })
   const date = new Date().setHours(0, 0, 0, 0)
   const values = [[null, asunto, descripcion, date, userInfo.id, null, 'PENDIENTE', type]]
@@ -30,12 +30,14 @@ exports.getCases = async (req, res) => {
     host: 'localhost',
     user: 'root',
     database: 'csc',
-    port: '3001'
+    port: '3306'
   })
   switch(userInfo.type){
     case 1:
-      connection.query('SELECT * FROM casos', function(error, result){
+      connection.query(params ? `SELECT * FROM casos WHERE ${attrib}=?` : `SELECT * FROM casos`, value, 
+        function(error, result){
         if(error){
+          console.log(error)
           return res.json({ status: 400, message: "Ocurrió un Error en la Consulta", succes: false })
         } else {
           connection.end()

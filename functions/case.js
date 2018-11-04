@@ -6,7 +6,7 @@ exports.registerCase = async (req, res) => {
   const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    database: 'csc3',
+    database: 'csc',
     port: '3001'
   })
   const date = new Date().setHours(0, 0, 0, 0)
@@ -29,7 +29,7 @@ exports.getCases = async (req, res) => {
   const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    database: 'csc3',
+    database: 'csc',
     port: '3001'
   })
   switch (userInfo.type) {

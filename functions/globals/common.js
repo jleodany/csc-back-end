@@ -6,7 +6,7 @@ function getUserByToken(token) {
       host: 'localhost',
       user: 'root',
       password: '',
-      database: 'csc3',
+      database: 'csc',
       port: '3001'
     });
     connection.query('SELECT * FROM session WHERE session.token = ?',
@@ -44,7 +44,7 @@ function getUserByUserName(userNameSent) {
       host: 'localhost',
       user: 'root',
       password: '',
-      database: 'csc3',
+      database: 'csc',
       port: '3001'
     });
     connection.query('SELECT * FROM users WHERE users.userName = ?',
@@ -72,7 +72,7 @@ function createSession(userID) {
       host: 'localhost',
       user: 'root',
       password: '',
-      database: 'csc3',
+      database: 'csc',
       port: '3001'
     });
     connection.query('INSERT INTO session (token, user) VALUES?', [values],

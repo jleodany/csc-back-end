@@ -3,6 +3,7 @@ const mysql = require("mysql");
 
 exports.registerCase = async (req, res) => {
   const { asunto, descripcion, type, userInfo } = req.body
+  // const registerer = await getUserById(userInfo.id)
   const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -10,9 +11,9 @@ exports.registerCase = async (req, res) => {
     port: '3001'
   })
   const date = new Date().setHours(0, 0, 0, 0)
-  const values = [[null, asunto, descripcion, date, userInfo.id, null, 'PENDIENTE', type]]
+  const values = [[null, asunto, descripcion, date, userInfo.id, userInfo.userName, null, null, 'PENDIENTE', type]]
   console.log(values)
-  connection.query('INSERT INTO casos (idCaso, asunto, descripcion, f_apertura, user, operador, status, type) VALUES?',
+  connection.query('INSERT INTO casos (idCaso, asunto, descripcion, f_apertura, user, userName, operador, operadorName, status, type) VALUES?',
     [values], function (error, result) {
       if (error) {
         console.log('ERROR', error)
@@ -34,7 +35,7 @@ exports.getCases = async (req, res) => {
   })
   switch (userInfo.type) {
     case 1:
-    console.log("Admin")
+      console.log("Admin")
       connection.query(params ? `SELECT * FROM casos WHERE ${attrib}=?` : `SELECT * FROM casos`, value,
         function (error, result) {
           if (error) {
@@ -47,21 +48,32 @@ exports.getCases = async (req, res) => {
         })
       break;
     case 2:
-    console.log("Operator")
+      console.log("Operator")
+      const sqlOp = `SELECT * FROM casos WHERE casos.user=${userInfo.id} OR casos.user=${userInfo.id} `
+      connection.query(params ? sqlOp + `AND ${attrib}=?` : sqlOp, value,
+        function (error, result) {
+          if (error) {
+            console.log(error)
+            return res.json({ status: 400, message: "Ocurrió un Error en la Consulta", succes: false })
+          } else {
+            connection.end()
+            return res.json({ status: 200, message: "Consulta Exitosa", succes: true, data: result });
+          }
+        })
       break;
     default:
-    console.log("User")
+      console.log("User")
       const sql = `SELECT * FROM casos WHERE casos.user=${userInfo.id}`
-        connection.query(params ? sql+`AND ${attrib}=?` : sql, value,
-          function (error, result) {
-            if (error) {
-              console.log(error)
-              return res.json({ status: 400, message: "Ocurrió un Error en la Consulta", succes: false })
-            } else {
-              connection.end()
-              return res.json({ status: 200, message: "Consulta Exitosa", succes: true, data: result });
-            }
-          })
+      connection.query(params ? sql + `AND ${attrib}=?` : sql, value,
+        function (error, result) {
+          if (error) {
+            console.log(error)
+            return res.json({ status: 400, message: "Ocurrió un Error en la Consulta", succes: false })
+          } else {
+            connection.end()
+            return res.json({ status: 200, message: "Consulta Exitosa", succes: true, data: result });
+          }
+        })
       break;
   }
 }

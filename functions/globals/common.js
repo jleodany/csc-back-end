@@ -64,6 +64,33 @@ function getUserByUserName(userNameSent) {
 }
 module.exports.getUserByUserName = getUserByUserName;
 
+function getUserByAttrib(attrib, value) {
+  console.log("Looking for ", attrib, value)
+  return new Promise((resolve, reject) => {
+    const connection = mysql.createConnection({
+      host: 'localhost',
+      user: 'root',
+      password: '',
+      database: 'csc',
+      port: '3001'
+    });
+    connection.query(`SELECT * FROM users WHERE ${attrib} = ?`,
+      value, function (error, result, fields) {
+        if (error) {
+          console.log(error);
+          reject(error);
+        } else {
+          console.log("Result", result);
+          connection.end();
+          resolve(result);
+        }
+      }
+    )
+  }
+  )
+}
+module.exports.getUserByAttrib = getUserByAttrib;
+
 function createSession(userID) {
   const token = new Date().getTime()
   const values = [[token, userID]]

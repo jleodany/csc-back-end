@@ -9,7 +9,7 @@ exports.registerCase = async (req, res) => {
     host: 'localhost',
     user: 'root',
     database: 'csc',
-    port: '3306'
+    port: '3001'
   })
   const date = new Date().setHours(0, 0, 0, 0)
   const values = [[null, asunto, descripcion, date, userInfo.id, userInfo.userName, null, null, 'PENDIENTE', type]]
@@ -33,13 +33,35 @@ exports.modifyCase = async (req, res) => {
     host: 'localhost',
     user: 'root',
     database: 'csc',
-    port: '3306'
+    port: '3001'
   })
   const date = new Date().setHours(0, 0, 0, 0)
   const values = [[asunto, descripcion, date, type, idCaso]]
   console.log(values)
   connection.query('UPDATE casos SET asunto=?, descripcion=?, f_apertura=?, type=? WHERE idCaso=?', 
     [asunto, descripcion, date, type, idCaso], function (error, result) {
+      if (error) {
+        console.log('ERROR', error)
+        return res.json({ status: 400, message: "Error en Inserción de Datos", succes: false })
+      } else {
+        connection.end()
+        return res.json({ status: 200, message: "Caso Modificado Exitosamente", succes: true });
+      }
+    })
+}
+
+exports.changeStatus = async (req, res) => {
+  const { idCaso, status } = req.body
+  // const registerer = await getUserById(userInfo.id)
+  const connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    database: 'csc',
+    port: '3001'
+  })
+  const date = new Date().setHours(0, 0, 0, 0)
+  connection.query('UPDATE casos SET status=? WHERE idCaso=?', 
+    [status, idCaso], function (error, result) {
       if (error) {
         console.log('ERROR', error)
         return res.json({ status: 400, message: "Error en Inserción de Datos", succes: false })
@@ -57,7 +79,7 @@ exports.asignOperator = async (req, res) => {
     host: 'localhost',
     user: 'root',
     database: 'csc',
-    port: '3306'
+    port: '3001'
   })
   const userInfo = await getUserByAttrib('id', idOperador)
   const values = [idOperador, userInfo[0].userName, idCaso]
@@ -80,7 +102,7 @@ exports.getCases = async (req, res) => {
     host: 'localhost',
     user: 'root',
     database: 'csc',
-    port: '3306'
+    port: '3001'
   })
   switch (userInfo.type) {
     case 1:

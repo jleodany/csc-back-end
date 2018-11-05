@@ -2,11 +2,14 @@ const registerUser = require("./functions/user").registerUser
 const getUserByToken = require('./functions/globals/common').getUserByToken
 const getUsers = require("./functions/user").getUsers
 const modifyUser = require("./functions/user").modifyUser
+const deleteUser = require("./functions/user").deleteUser
 const login = require("./functions/user").login
 const logout = require("./functions/user").logout
+const changePass = require("./functions/user").changePass
 const registerCase = require("./functions/case").registerCase
 const getCases = require("./functions/case").getCases
 const modifyCase = require("./functions/case").modifyCase
+const changeStatus = require("./functions/case").changeStatus
 const asignOperator = require("./functions/case").asignOperator
 var express = require("express");
 var bodyParser = require('body-parser');
@@ -22,14 +25,15 @@ const validateUser = async (req, res, next) => {
   console.log('req.method: ', req.method)
   console.log('req.url: ', req.originalUrl)
   let token
-  if(req.originalUrl != '/login' && req.originalUrl != '/registerUser'){
+  if(req.originalUrl != '/login' && req.originalUrl != '/registerUser' && req.originalUrl != '/changePass'){
     if(req.method == 'POST'){
       token = req.body.token
     } else {
       token = req.query.token
     }
     const userInfo = await getUserByToken(token)
-    if(!userInfo){
+    if(!userInfo || userInfo == []){
+      console.log("No esta loggeado")
       return res.json({ status: 400, message: "Su token ha expirado", succes: false })
     }
     console.log("userInfo: ", userInfo)
@@ -66,6 +70,12 @@ app.post("/asignOperator", asignOperator)
 app.post("/modifyUser", modifyUser)
 
 app.post("/modifyCase", modifyCase)
+
+app.post("/deleteUser", deleteUser)
+
+app.post("/changeStatus", changeStatus)
+
+app.post("/changePass", changePass)
 
 app.get('/getUserData', function(req, res){
   return res.json({ status: 200, message: "Datos Consultados Exitosamente", succes: true, data: req.body.userInfo })

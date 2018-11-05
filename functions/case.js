@@ -26,6 +26,30 @@ exports.registerCase = async (req, res) => {
     })
 }
 
+exports.modifyCase = async (req, res) => {
+  const { asunto, descripcion, type, userInfo, idCaso } = req.body
+  // const registerer = await getUserById(userInfo.id)
+  const connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    database: 'csc',
+    port: '3306'
+  })
+  const date = new Date().setHours(0, 0, 0, 0)
+  const values = [[asunto, descripcion, date, type, idCaso]]
+  console.log(values)
+  connection.query('UPDATE casos SET asunto=?, descripcion=?, f_apertura=?, type=? WHERE idCaso=?', 
+    [asunto, descripcion, date, type, idCaso], function (error, result) {
+      if (error) {
+        console.log('ERROR', error)
+        return res.json({ status: 400, message: "Error en Inserción de Datos", succes: false })
+      } else {
+        connection.end()
+        return res.json({ status: 200, message: "Caso Modificado Exitosamente", succes: true });
+      }
+    })
+}
+
 exports.asignOperator = async (req, res) => {
   const { idCaso, idOperador } = req.body
   // const registerer = await getUserById(userInfo.id)

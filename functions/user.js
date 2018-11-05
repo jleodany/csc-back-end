@@ -108,7 +108,7 @@ exports.modifyUser = async/*<--- importante para usar 'await'*/(req, res) => {
       }
     });
     connection.query('UPDATE users SET userName=?, pass=?, firstName=?, lastName=?, email=?, type=? WHERE id =?',
-      [values], function (error, result) {
+      [userName, passWordToken, firstName, lastName, email, type, id], function (error, result) {
         console.log("INSIDE INSERT FUNCTION");
         if (error) {
           console.log("ERROR", error);

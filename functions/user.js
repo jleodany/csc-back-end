@@ -37,7 +37,7 @@ exports.registerUser = async/*<--- importante para usar 'await'*/(req, res) => {
       host: 'localhost',
       user: 'root',
       database: 'csc',
-      port: '3001'
+      port: '3306'
     });
     connection.connect(function (error) {
       if (error) {
@@ -63,6 +63,67 @@ exports.registerUser = async/*<--- importante para usar 'await'*/(req, res) => {
   }
 }
 
+exports.modifyUser = async/*<--- importante para usar 'await'*/(req, res) => {
+  const id = req.body.id
+  const userName = req.body.userName;
+  const pass = req.body.pass;
+  const firstName = req.body.firstName;
+  const lastName = req.body.lastName;
+  const email = req.body.email;
+  const type = req.body.type;
+  const myPlaintextPassword = randomToken(10)
+  const saltRounds = Math.random() * (11 - 0) + 0;
+  const dbUser = await getUserByUserName(userName)
+  if (!userName || !pass || !firstName || !lastName || !email || !type) {
+    return res.json({ status: 400, message: "Faltan Datos Obligatorios", succes: false });
+  }
+  if (dbUser.length > 0) {
+    return res.json({ status: 400, message: "Usuario Ya Registrado", succes: false })
+  } else {
+    const hashedPass = bcrypt.hashSync(pass + myPlaintextPassword, saltRounds)
+    let splittedSecretWord = ''
+    for (let x = 0; x < myPlaintextPassword.length; x++) {
+      if (splittedSecretWord == '') {
+        splittedSecretWord = myPlaintextPassword.charAt(x).charCodeAt()
+      } else {
+        splittedSecretWord = splittedSecretWord + '.' + myPlaintextPassword.charAt(x).charCodeAt()
+      }
+    }
+    console.log(splittedSecretWord)
+    const passWordToken = Buffer(JSON.stringify({ word: hashedPass, secretWord: splittedSecretWord }), 'binary').toString('base64')
+    // const passWordToken = Buffer(JSON.stringify({ word: hashedPass, secretWord: splittedSecretWord }), 'binary')
+    console.log('decoded: ', new Buffer(passWordToken, 'base64').toString("ascii"))
+    const values = [[userName, passWordToken, firstName, lastName, email, type, id]]
+    const connection = mysql.createConnection({
+      host: 'localhost',
+      user: 'root',
+      database: 'csc',
+      port: '3306'
+    });
+    connection.connect(function (error) {
+      if (error) {
+        console.log("ERROR>", error);
+      } else {
+        console.log('Conexion correcta.');
+      }
+    });
+    connection.query('UPDATE users SET userName=?, pass=?, firstName=?, lastName=?, email=?, type=? WHERE id =?',
+      [values], function (error, result) {
+        console.log("INSIDE INSERT FUNCTION");
+        if (error) {
+          console.log("ERROR", error);
+          connection.end()
+          return res.json({ status: 400, message: "Error en Inserción de Datos", succes: false })
+        } else {
+          console.log("SUCCEED");
+          connection.end()
+          return res.json({ status: 200, message: "Usuario Modificado Exitosamente", succes: true });
+        }
+      }
+    );
+  }
+}
+
 exports.getUsers = async (req, res) => {
   const token = req.query.token
   const connection = mysql.createConnection({
@@ -70,7 +131,7 @@ exports.getUsers = async (req, res) => {
     user: 'root',
     password: '',
     database: 'csc',
-    port: '3001'
+    port: '3306'
   });
   connection.query('SELECT * from users', function (error, result, fields) {
     if (error) {
@@ -117,7 +178,7 @@ exports.logout = async (req, res) => {
     host: 'localhost',
     user: 'root',
     database: 'csc',
-    port: '3001'
+    port: '3306'
   })
   console.log(token)
   connection.query('DELETE FROM session WHERE session.token = ?',

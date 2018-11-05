@@ -1,4 +1,5 @@
 
+const getUserByAttrib = require('../functions/globals/common').getUserByAttrib
 const mysql = require("mysql");
 
 exports.registerCase = async (req, res) => {
@@ -8,7 +9,7 @@ exports.registerCase = async (req, res) => {
     host: 'localhost',
     user: 'root',
     database: 'csc',
-    port: '3001'
+    port: '3306'
   })
   const date = new Date().setHours(0, 0, 0, 0)
   const values = [[null, asunto, descripcion, date, userInfo.id, userInfo.userName, null, null, 'PENDIENTE', type]]
@@ -25,13 +26,37 @@ exports.registerCase = async (req, res) => {
     })
 }
 
+exports.asignOperator = async (req, res) => {
+  const { idCaso, idOperador } = req.body
+  // const registerer = await getUserById(userInfo.id)
+  const connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    database: 'csc',
+    port: '3306'
+  })
+  const userInfo = await getUserByAttrib('id', idOperador)
+  const values = [idOperador, userInfo[0].userName, idCaso]
+  connection.query(`UPDATE casos SET operador = ?, operadorName = ? WHERE idCaso = ?`,
+    values, function (error, result) {
+      if (error) {
+        console.log('ERROR', error)
+        return res.json({ status: 400, message: "Error en Inserción de Datos", succes: false })
+      } else {
+        connection.end()
+        return res.json({ status: 200, message: "Operador Asignado Exitosamente", succes: true });
+      }
+    }
+  )
+}
+
 exports.getCases = async (req, res) => {
   const { params, attrib, value, userInfo } = req.body
   const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     database: 'csc',
-    port: '3001'
+    port: '3306'
   })
   switch (userInfo.type) {
     case 1:
@@ -49,8 +74,8 @@ exports.getCases = async (req, res) => {
       break;
     case 2:
       console.log("Operator")
-      const sqlOp = `SELECT * FROM casos WHERE casos.user=${userInfo.id} OR casos.user=${userInfo.id} `
-      connection.query(params ? sqlOp + `AND ${attrib}=?` : sqlOp, value,
+      const sqlOp = `SELECT * FROM casos WHERE casos.user=? OR casos.operador=? `
+      connection.query(params ? sqlOp + `AND ${attrib}=?` : sqlOp, [userInfo.id, userInfo.id, value],
         function (error, result) {
           if (error) {
             console.log(error)

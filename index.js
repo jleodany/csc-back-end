@@ -1,10 +1,12 @@
 const registerUser = require("./functions/user").registerUser
 const getUserByToken = require('./functions/globals/common').getUserByToken
 const getUsers = require("./functions/user").getUsers
+const modifyUser = require("./functions/user").modifyUser
 const login = require("./functions/user").login
 const logout = require("./functions/user").logout
 const registerCase = require("./functions/case").registerCase
 const getCases = require("./functions/case").getCases
+const asignOperator = require("./functions/case").asignOperator
 var express = require("express");
 var bodyParser = require('body-parser');
 var app = express();
@@ -57,6 +59,10 @@ app.post('/registerCase', registerCase)
 app.get("/getUsers", getUsers)
 
 app.post("/getCases", getCases)
+
+app.post("/asignOperator", asignOperator)
+
+app.post("/modifyUser", modifyUser)
 
 app.get('/getUserData', function(req, res){
   return res.json({ status: 200, message: "Datos Consultados Exitosamente", succes: true, data: req.body.userInfo })

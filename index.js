@@ -12,6 +12,7 @@ const getCases = require("./functions/case").getCases
 const modifyCase = require("./functions/case").modifyCase
 const changeStatus = require("./functions/case").changeStatus
 const asignOperator = require("./functions/case").asignOperator
+const fs = require('fs')
 var express = require("express");
 const multer = require("multer")
 const storage = multer.diskStorage({
@@ -90,8 +91,10 @@ app.post("/modifyCase", modifyCase)
 app.post("/uploadFile", upload.single('file'), uploadFile)
 
 app.post('/download', function(req, res){
-  var file = __dirname + `/uploads/377.jpg`; //${req.body.number}
-  return res.json({ status: 200, message: "Datos Consultados Exitosamente", succes: true, data: file })
+  const idCaso = req.body.idCaso
+  var file = __dirname + `/uploads/${idCaso}.jpg`; //${req.body.number}
+  const bitmap = fs.readFileSync(file)
+  return res.json({ status: 200, message: "Datos Consultados Exitosamente", succes: true, data: new Buffer(bitmap).toString('base64') })
 });
 
 app.post("/deleteUser", deleteUser)

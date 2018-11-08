@@ -5,7 +5,7 @@ const multer = require("multer")
 const upload = multer({dest: 'uploads/'})
 
 exports.registerCase = async (req, res) => {
-  const { asunto, descripcion, type, userInfo } = req.body
+  const { asunto, descripcion, type, userInfo, file } = req.body
   // const registerer = await getUserById(userInfo.id)
   const connection = mysql.createConnection({
     host: 'localhost',
@@ -14,9 +14,9 @@ exports.registerCase = async (req, res) => {
     port: '3001'
   })
   const date = new Date().setHours(0, 0, 0, 0)
-  const values = [[null, asunto, descripcion, date, userInfo.id, userInfo.userName, null, null, 'PENDIENTE', type]]
+  const values = [[null, asunto, descripcion, date, userInfo.id, userInfo.userName, null, null, 'PENDIENTE', file, type]]
   console.log(values)
-  connection.query('INSERT INTO casos (idCaso, asunto, descripcion, f_apertura, user, userName, operador, operadorName, status, type) VALUES?',
+  connection.query('INSERT INTO casos (idCaso, asunto, descripcion, f_apertura, user, userName, operador, operadorName, status, file, type) VALUES?',
     [values], function (error, result) {
       if (error) {
         console.log('ERROR', error)

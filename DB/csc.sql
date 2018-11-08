@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
--- https://www.phpmyadmin.net/
+-- version 4.5.2
+-- http://www.phpmyadmin.net
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 05-11-2018 a las 03:28:44
--- Versión del servidor: 10.1.36-MariaDB
--- Versión de PHP: 7.2.11
+-- Servidor: localhost
+-- Tiempo de generación: 08-11-2018 a las 07:47:49
+-- Versión del servidor: 10.1.13-MariaDB
+-- Versión de PHP: 5.6.20
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -52,6 +50,7 @@ CREATE TABLE `casos` (
   `operador` int(11) DEFAULT NULL,
   `operadorName` varchar(30) DEFAULT NULL,
   `status` varchar(30) NOT NULL,
+  `file` tinyint(1) NOT NULL,
   `type` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -59,9 +58,29 @@ CREATE TABLE `casos` (
 -- Volcado de datos para la tabla `casos`
 --
 
-INSERT INTO `casos` (`idCaso`, `asunto`, `descripcion`, `f_apertura`, `user`, `userName`, `operador`, `operadorName`, `status`, `type`) VALUES
-(2, 'Prueba ', 'Primera prueba de crear caso', 1540958400000, 4, 'jleodany', 5, 'itsyasus', '0', 'Incidente'),
-(3, 'Prueba campos nuevos', 'Esta es una prueba para los nuevos campos agregados a la tabla', 1541304000000, 4, 'jleodany', 5, 'itsyasus', '0', 'Incidente');
+INSERT INTO `casos` (`idCaso`, `asunto`, `descripcion`, `f_apertura`, `user`, `userName`, `operador`, `operadorName`, `status`, `file`, `type`) VALUES
+(2, 'Prueba ', 'Primera prueba de crear caso', 1540958400000, 4, 'jleodany', 5, 'itsyasus', 'RECHAZADO', 0, 'Incidente'),
+(3, 'Prueba campos nuevos', 'Esta es una prueba para los nuevos campos agregados a la tabla', 1541304000000, 4, 'jleodany', 5, 'itsyasus', 'PENDIENTE', 0, 'Incidente'),
+(368, 'asdasd', 'vsfvdfbvdvc ', 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 0, 'Requerimiento'),
+(369, 'fasdca', 'sasdasd', 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 0, 'Requerimiento'),
+(370, 'asdasd', 'asdasda', 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 0, 'Incidente'),
+(371, 'asdasf', 'sdgdfddssdf', 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 0, 'Incidente'),
+(372, 'asdasd', 'adfsdfs', 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 0, 'Incidente'),
+(373, 'qwswfter', 'tergefdgerf', 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 0, 'Requerimiento'),
+(374, 'asfd', 'gfgfsddsdf', 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 0, 'Incidente'),
+(375, 'asdasd', 'asdasd', 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 0, 'Incidente'),
+(376, 'sdfv', 'dssdfsdf', 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 0, 'Incidente'),
+(377, 'sfgsdfsd', 'fsdfsdfsdf', 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 0, 'Requerimiento'),
+(378, 'Prueba de archivo', 'Prueba de aperturar caso con archivo', 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 0, 'Incidente'),
+(379, 'dasdasd', 'asfdasdas', 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 0, 'Incidente'),
+(380, 'sdfsdf', 'sdfsdfsdf', 1541649600000, 5, 'itsyasus', NULL, NULL, 'PENDIENTE', 0, 'Requerimiento'),
+(381, 'asdasd', 'asdasd', 1541649600000, 5, 'itsyasus', NULL, NULL, 'PENDIENTE', 1, 'Requerimiento'),
+(382, 'asdafda', 'dsfasdasd', 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 0, 'Requerimiento'),
+(383, 'adfsgfs', 'sdgsfsdfs', 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 0, 'Requerimiento'),
+(384, 'asdfadf', 'asdasdasd', 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 0, 'Requerimiento'),
+(385, 'asfsdf', 'asffsfgsdfd', 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 1, 'Requerimiento'),
+(386, 'Prueba por fin descarga', 'Una descripcion cualquiera', 1541649600000, 5, 'itsyasus', NULL, NULL, 'PENDIENTE', 1, 'Incidente'),
+(387, 'Segunda prueba', 'Una prueba cualquiera y ya', 1541649600000, 5, 'itsyasus', NULL, NULL, 'PENDIENTE', 0, 'Requerimiento');
 
 -- --------------------------------------------------------
 
@@ -80,12 +99,9 @@ CREATE TABLE `session` (
 --
 
 INSERT INTO `session` (`id`, `token`, `user`) VALUES
-(5, '1540956885496', 4),
-(6, '1540980056119', 4),
-(9, '1540981248238', 4),
-(10, '1541339416184', 4),
-(12, '1541379512503', 5),
-(14, '1541384465406', 4);
+(16, '1541634469316', 4),
+(17, '1541642618258', 4),
+(20, '1541654823483', 5);
 
 -- --------------------------------------------------------
 
@@ -152,26 +168,21 @@ ALTER TABLE `users`
 --
 ALTER TABLE `adjuntos`
   MODIFY `idAdjunto` int(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT de la tabla `casos`
 --
 ALTER TABLE `casos`
-  MODIFY `idCaso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=349;
-
+  MODIFY `idCaso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=388;
 --
 -- AUTO_INCREMENT de la tabla `session`
 --
 ALTER TABLE `session`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
-
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 --
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-COMMIT;
-
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -34,7 +34,7 @@ exports.uploadFile = async (req, res) => {
 }
 
 exports.modifyCase = async (req, res) => {
-  const { asunto, descripcion, type, userInfo, idCaso } = req.body
+  const { asunto, descripcion, type, userInfo, idCaso, file } = req.body
   // const registerer = await getUserById(userInfo.id)
   const connection = mysql.createConnection({
     host: 'localhost',
@@ -45,8 +45,8 @@ exports.modifyCase = async (req, res) => {
   const date = new Date().setHours(0, 0, 0, 0)
   const values = [[asunto, descripcion, date, type, idCaso]]
   console.log(values)
-  connection.query('UPDATE casos SET asunto=?, descripcion=?, f_apertura=?, type=? WHERE idCaso=?', 
-    [asunto, descripcion, date, type, idCaso], function (error, result) {
+  connection.query('UPDATE casos SET asunto=?, descripcion=?, f_apertura=?, file=?, type=? WHERE idCaso=?', 
+    [asunto, descripcion, date, file, type, idCaso], function (error, result) {
       if (error) {
         console.log('ERROR', error)
         return res.json({ status: 400, message: "Error en Inserción de Datos", succes: false })
@@ -128,7 +128,7 @@ exports.getCases = async (req, res) => {
     case 2:
       console.log("Operator")
       const sqlOp = `SELECT * FROM casos WHERE casos.user=? OR casos.operador=? `
-      connection.query(params ? sqlOp + `AND ${attrib}=?` : sqlOp, [userInfo.id, userInfo.id, value],
+      connection.query(params ? sqlOp + ` AND ${attrib}=?` : sqlOp, [userInfo.id, userInfo.id, value],
         function (error, result) {
           if (error) {
             console.log(error)
@@ -142,7 +142,7 @@ exports.getCases = async (req, res) => {
     default:
       console.log("User")
       const sql = `SELECT * FROM casos WHERE casos.user=${userInfo.id}`
-      connection.query(params ? sql + `AND ${attrib}=?` : sql, value,
+      connection.query(params ? sql + ` AND ${attrib}=?` : sql, value,
         function (error, result) {
           if (error) {
             console.log(error)

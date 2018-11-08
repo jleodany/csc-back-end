@@ -1,6 +1,8 @@
 
 const getUserByAttrib = require('../functions/globals/common').getUserByAttrib
 const mysql = require("mysql");
+const multer = require("multer")
+const upload = multer({dest: 'uploads/'})
 
 exports.registerCase = async (req, res) => {
   const { asunto, descripcion, type, userInfo } = req.body
@@ -20,10 +22,15 @@ exports.registerCase = async (req, res) => {
         console.log('ERROR', error)
         return res.json({ status: 400, message: "Error en Inserción de Datos", succes: false })
       } else {
+        console.log(result)
         connection.end()
-        return res.json({ status: 200, message: "Caso Aperturado Exitosamente", succes: true });
+        return res.json({ status: 200, message: "Caso Aperturado Exitosamente", succes: true, data: result });
       }
     })
+}
+
+exports.uploadFile = async (req, res) => {
+  return res.json({ status: 200, message: "Caso Aperturado Exitosamente", succes: true});
 }
 
 exports.modifyCase = async (req, res) => {

@@ -7,11 +7,23 @@ const login = require("./functions/user").login
 const logout = require("./functions/user").logout
 const changePass = require("./functions/user").changePass
 const registerCase = require("./functions/case").registerCase
+const uploadFile = require("./functions/case").uploadFile
 const getCases = require("./functions/case").getCases
 const modifyCase = require("./functions/case").modifyCase
 const changeStatus = require("./functions/case").changeStatus
 const asignOperator = require("./functions/case").asignOperator
 var express = require("express");
+const multer = require("multer")
+const storage = multer.diskStorage({
+  destination: function(req, file, cb){
+    cb(null, './uploads/');
+  },
+  filename: function(req, file, cb){
+    cb(null, file.originalname)
+  }
+})
+// const upload = multer({dest: 'uploads/'})
+const upload = multer({storage: storage})
 var bodyParser = require('body-parser');
 var app = express();
 
@@ -25,7 +37,11 @@ const validateUser = async (req, res, next) => {
   console.log('req.method: ', req.method)
   console.log('req.url: ', req.originalUrl)
   let token
-  if(req.originalUrl != '/login' && req.originalUrl != '/registerUser' && req.originalUrl != '/changePass'){
+  if(req.originalUrl != '/login' 
+  && req.originalUrl != '/registerUser' 
+  && req.originalUrl != '/changePass' 
+  && req.originalUrl != '/uploadFile' 
+  && req.originalUrl != '/download'){
     if(req.method == 'POST'){
       token = req.body.token
     } else {
@@ -70,6 +86,13 @@ app.post("/asignOperator", asignOperator)
 app.post("/modifyUser", modifyUser)
 
 app.post("/modifyCase", modifyCase)
+
+app.post("/uploadFile", upload.single('file'), uploadFile)
+
+app.post('/download', function(req, res){
+  var file = __dirname + `/uploads/377.jpg`; //${req.body.number}
+  return res.json({ status: 200, message: "Datos Consultados Exitosamente", succes: true, data: file })
+});
 
 app.post("/deleteUser", deleteUser)
 

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 08-11-2018 a las 07:47:49
+-- Tiempo de generación: 08-11-2018 a las 16:45:38
 -- Versión del servidor: 10.1.13-MariaDB
 -- Versión de PHP: 5.6.20
 
@@ -45,6 +45,7 @@ CREATE TABLE `casos` (
   `asunto` varchar(45) NOT NULL,
   `descripcion` text NOT NULL,
   `f_apertura` bigint(20) NOT NULL,
+  `f_mod` bigint(20) NOT NULL,
   `user` int(11) NOT NULL,
   `userName` varchar(30) NOT NULL,
   `operador` int(11) DEFAULT NULL,
@@ -58,29 +59,11 @@ CREATE TABLE `casos` (
 -- Volcado de datos para la tabla `casos`
 --
 
-INSERT INTO `casos` (`idCaso`, `asunto`, `descripcion`, `f_apertura`, `user`, `userName`, `operador`, `operadorName`, `status`, `file`, `type`) VALUES
-(2, 'Prueba ', 'Primera prueba de crear caso', 1540958400000, 4, 'jleodany', 5, 'itsyasus', 'RECHAZADO', 0, 'Incidente'),
-(3, 'Prueba campos nuevos', 'Esta es una prueba para los nuevos campos agregados a la tabla', 1541304000000, 4, 'jleodany', 5, 'itsyasus', 'PENDIENTE', 0, 'Incidente'),
-(368, 'asdasd', 'vsfvdfbvdvc ', 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 0, 'Requerimiento'),
-(369, 'fasdca', 'sasdasd', 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 0, 'Requerimiento'),
-(370, 'asdasd', 'asdasda', 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 0, 'Incidente'),
-(371, 'asdasf', 'sdgdfddssdf', 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 0, 'Incidente'),
-(372, 'asdasd', 'adfsdfs', 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 0, 'Incidente'),
-(373, 'qwswfter', 'tergefdgerf', 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 0, 'Requerimiento'),
-(374, 'asfd', 'gfgfsddsdf', 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 0, 'Incidente'),
-(375, 'asdasd', 'asdasd', 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 0, 'Incidente'),
-(376, 'sdfv', 'dssdfsdf', 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 0, 'Incidente'),
-(377, 'sfgsdfsd', 'fsdfsdfsdf', 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 0, 'Requerimiento'),
-(378, 'Prueba de archivo', 'Prueba de aperturar caso con archivo', 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 0, 'Incidente'),
-(379, 'dasdasd', 'asfdasdas', 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 0, 'Incidente'),
-(380, 'sdfsdf', 'sdfsdfsdf', 1541649600000, 5, 'itsyasus', NULL, NULL, 'PENDIENTE', 0, 'Requerimiento'),
-(381, 'asdasd', 'asdasd', 1541649600000, 5, 'itsyasus', NULL, NULL, 'PENDIENTE', 1, 'Requerimiento'),
-(382, 'asdafda', 'dsfasdasd', 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 0, 'Requerimiento'),
-(383, 'adfsgfs', 'sdgsfsdfs', 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 0, 'Requerimiento'),
-(384, 'asdfadf', 'asdasdasd', 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 0, 'Requerimiento'),
-(385, 'asfsdf', 'asffsfgsdfd', 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 1, 'Requerimiento'),
-(386, 'Prueba por fin descarga', 'Una descripcion cualquiera', 1541649600000, 5, 'itsyasus', NULL, NULL, 'PENDIENTE', 1, 'Incidente'),
-(387, 'Segunda prueba', 'Una prueba cualquiera y ya', 1541649600000, 5, 'itsyasus', NULL, NULL, 'PENDIENTE', 0, 'Requerimiento');
+INSERT INTO `casos` (`idCaso`, `asunto`, `descripcion`, `f_apertura`, `f_mod`, `user`, `userName`, `operador`, `operadorName`, `status`, `file`, `type`) VALUES
+(2, 'Prueba assdasdasda', 'Primera prueba de crear caso', 1514779200000, 1541649600000, 4, 'jleodany', 5, 'itsyasus', 'RECHAZADO', 0, 'Incidente'),
+(368, 'asdasd', 'vsfvdfbvasda', 1541649600000, 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 0, 'Requerimiento'),
+(389, 'Prueba de fecha de modificacion', 'akjsdnfnaksmddasdasd', 1541649600000, 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 0, 'Incidente'),
+(390, 'Prueba seria', 'Esta es una prueba seria de aperturar caso', 1541649600000, 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 1, 'Incidente');
 
 -- --------------------------------------------------------
 
@@ -101,7 +84,9 @@ CREATE TABLE `session` (
 INSERT INTO `session` (`id`, `token`, `user`) VALUES
 (16, '1541634469316', 4),
 (17, '1541642618258', 4),
-(20, '1541654823483', 5);
+(20, '1541654823483', 5),
+(26, '1541683570292', 5),
+(28, '1541685475812', 4);
 
 -- --------------------------------------------------------
 
@@ -172,12 +157,12 @@ ALTER TABLE `adjuntos`
 -- AUTO_INCREMENT de la tabla `casos`
 --
 ALTER TABLE `casos`
-  MODIFY `idCaso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=388;
+  MODIFY `idCaso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=391;
 --
 -- AUTO_INCREMENT de la tabla `session`
 --
 ALTER TABLE `session`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 --
 -- AUTO_INCREMENT de la tabla `users`
 --

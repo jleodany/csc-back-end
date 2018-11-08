@@ -14,9 +14,9 @@ exports.registerCase = async (req, res) => {
     port: '3001'
   })
   const date = new Date().setHours(0, 0, 0, 0)
-  const values = [[null, asunto, descripcion, date, userInfo.id, userInfo.userName, null, null, 'PENDIENTE', file, type]]
+  const values = [[null, asunto, descripcion, date, date, userInfo.id, userInfo.userName, null, null, 'PENDIENTE', file, type]]
   console.log(values)
-  connection.query('INSERT INTO casos (idCaso, asunto, descripcion, f_apertura, user, userName, operador, operadorName, status, file, type) VALUES?',
+  connection.query('INSERT INTO casos (idCaso, asunto, descripcion, f_apertura, f_mod, user, userName, operador, operadorName, status, file, type) VALUES?',
     [values], function (error, result) {
       if (error) {
         console.log('ERROR', error)
@@ -45,7 +45,7 @@ exports.modifyCase = async (req, res) => {
   const date = new Date().setHours(0, 0, 0, 0)
   const values = [[asunto, descripcion, date, type, idCaso]]
   console.log(values)
-  connection.query('UPDATE casos SET asunto=?, descripcion=?, f_apertura=?, file=?, type=? WHERE idCaso=?', 
+  connection.query('UPDATE casos SET asunto=?, descripcion=?, f_mod=?, file=?, type=? WHERE idCaso=?', 
     [asunto, descripcion, date, file, type, idCaso], function (error, result) {
       if (error) {
         console.log('ERROR', error)

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 08-11-2018 a las 16:45:38
+-- Tiempo de generación: 13-11-2018 a las 11:24:07
 -- Versión del servidor: 10.1.13-MariaDB
 -- Versión de PHP: 5.6.20
 
@@ -55,16 +55,6 @@ CREATE TABLE `casos` (
   `type` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcado de datos para la tabla `casos`
---
-
-INSERT INTO `casos` (`idCaso`, `asunto`, `descripcion`, `f_apertura`, `f_mod`, `user`, `userName`, `operador`, `operadorName`, `status`, `file`, `type`) VALUES
-(2, 'Prueba assdasdasda', 'Primera prueba de crear caso', 1514779200000, 1541649600000, 4, 'jleodany', 5, 'itsyasus', 'RECHAZADO', 0, 'Incidente'),
-(368, 'asdasd', 'vsfvdfbvasda', 1541649600000, 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 0, 'Requerimiento'),
-(389, 'Prueba de fecha de modificacion', 'akjsdnfnaksmddasdasd', 1541649600000, 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 0, 'Incidente'),
-(390, 'Prueba seria', 'Esta es una prueba seria de aperturar caso', 1541649600000, 1541649600000, 4, 'jleodany', NULL, NULL, 'PENDIENTE', 1, 'Incidente');
-
 -- --------------------------------------------------------
 
 --
@@ -82,11 +72,7 @@ CREATE TABLE `session` (
 --
 
 INSERT INTO `session` (`id`, `token`, `user`) VALUES
-(16, '1541634469316', 4),
-(17, '1541642618258', 4),
-(20, '1541654823483', 5),
-(26, '1541683570292', 5),
-(28, '1541685475812', 4);
+(11, '1542082617772', 4);
 
 -- --------------------------------------------------------
 
@@ -109,11 +95,38 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `userName`, `pass`, `firstName`, `lastName`, `email`, `type`) VALUES
-(4, 'jleodany', 'eyJ3b3JkIjoiJDJiJDA0JGszQzBiOVVXdThpMEYvU3VULzQ2WHVJY0xpS05uSUtlWWVMMlloaTlOVzVINGs1U25aLy5pIiwic2VjcmV0V29yZCI6IjEyMC4xMTguOTkuMTIxLjk5LjEwOS40OC4xMDYuMTEwLjEyMSJ9', 'Jose', 'Ramirez', 'joseleodany@gmail.com', 1),
-(5, 'itsyasus', 'eyJ3b3JkIjoiJDJiJDA0JE5UNlpHa1V0MkdkemNDYXVyaVlzUHVUMG5FcktHL2d2elRLSVJZLnNIakouMS9JdFpvN2RHIiwic2VjcmV0V29yZCI6IjUxLjQ5LjQ4LjExNi4xMTEuMTE0LjQ5Ljk5LjUzLjEwOCJ9', 'Jesus', 'Soto', 'jesusenriquesotoa@gmail.com', 2),
-(6, 'kinanActivo', 'eyJ3b3JkIjoiJDJiJDA5JEJwcTEzNTNhYnRjN0ZzUlg1bEJ3UC52Z2RJM0hRWlU4TmVxU09MOU5tSXJhYnZFWEh0cnVXIiwic2VjcmV0V29yZCI6IjExOS4xMTUuNTcuNTQuMTExLjExMy4xMTQuMTE2LjU0LjExNyJ9', 'Kinan', 'El Dhibal', 'kinan05@gmail.com', 3),
-(7, 'levij', 'eyJ3b3JkIjoiJDJiJDA3JE92N2NIbTNiRDh2YlpTY1VCVVhXWmV5TTV2WmlldS9NMHJ4a3FDbkxvV2tSVG9QZ2ovazBtIiwic2VjcmV0V29yZCI6IjExNy41My4xMDEuMTA2LjU1LjU3LjQ4LjQ4LjExMy4xMTcifQ==', 'Levi', 'Ramirez', 'leviramirez@gmail.com', 2),
-(8, 'leurisj', 'eyJ3b3JkIjoiJDJiJDA5JG9vb0d0YjdpMFIya1h4Yklab1hFb080R2RTeHYxakpZSnI0ODBGWW1JT2RsRVZBWFlUQml5Iiwic2VjcmV0V29yZCI6IjEwNy4xMTQuNTQuNDkuNTcuNTYuNTEuNTEuMTIwLjEyMCJ9', 'Leuris', 'Ramirez', 'leurisramirez@gmail.com', 2);
+(17, 'jleodany', 'eyJ3b3JkIjoiJDJiJDEwJHZQMndtb20uUG01WWVwZ2RGOVYuN3VXbm9qY2IxVXRTNnJHenVVU2tMYXVPYUVPZnBQSGEuIiwic2VjcmV0V29yZCI6Ijk4Ljk4LjEwNi4xMDguMTExLjExMS4xMDguNTcuMTIxLjEwMiJ9', 'Jose', 'Ramirez', 'joseleodany@gmail.com', 1),
+(18, 'levij', 'eyJ3b3JkIjoiJDJiJDA3JGN4SGRsV2lKUzR5WlRLa0UzMS9wNi5FWkNGem00WEV4d1h5REtaRVA1Li5pSE1pTnZqQ1pHIiwic2VjcmV0V29yZCI6IjEyMS4xMDIuMTE2LjUyLjEwMC4xMDAuMTAxLjU0LjU3LjExNCJ9', 'Levi', 'Ramirez', 'leviramirez@gmail.com', 3),
+(19, 'leurisj3', 'eyJ3b3JkIjoiJDJiJDEwJHB6NEhEb2liNU9Da0ZXQ1dhM3ZodC51ZjlYY1AzaENleEpPYTBNcHhISDNZbzBxMWF1V2VpIiwic2VjcmV0V29yZCI6IjExNi4xMTguMTIyLjExMi4xMDcuMTAxLjEwMS4xMDUuMTAyLjExOSJ9', 'Leuris', 'Ramirez', 'leurisramirez@gmail.com', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usersHistory`
+--
+
+CREATE TABLE `usersHistory` (
+  `id` int(11) NOT NULL,
+  `user` int(11) NOT NULL,
+  `userName` varchar(30) NOT NULL,
+  `pass` varchar(300) NOT NULL,
+  `createdAt` varchar(30) NOT NULL,
+  `active` int(11) NOT NULL,
+  `expires` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `usersHistory`
+--
+
+INSERT INTO `usersHistory` (`id`, `user`, `userName`, `pass`, `createdAt`, `active`, `expires`) VALUES
+(7, 17, 'jleodany', 'eyJ3b3JkIjoiJDJiJDEwJHZQMndtb20uUG01WWVwZ2RGOVYuN3VXbm9qY2IxVXRTNnJHenVVU2tMYXVPYUVPZnBQSGEuIiwic2VjcmV0V29yZCI6Ijk4Ljk4LjEwNi4xMDguMTExLjExMS4xMDguNTcuMTIxLjEwMiJ9', '1542686400000', 1, '1550030400000'),
+(8, 18, 'levij', 'eyJ3b3JkIjoiJDJiJDA3JGN4SGRsV2lKUzR5WlRLa0UzMS9wNi5FWkNGem00WEV4d1h5REtaRVA1Li5pSE1pTnZqQ1pHIiwic2VjcmV0V29yZCI6IjEyMS4xMDIuMTE2LjUyLjEwMC4xMDAuMTAxLjU0LjU3LjExNCJ9', '1541822400000', 1, '1550030400000'),
+(9, 19, 'lurisj', 'eyJ3b3JkIjoiJDJiJDEwJFlsUDVEc29UNExSaGpBUW9JVHBqMi5OaVg3SE5lMGg2eE40MzVIUHBQV3FLN2RjL0xpcnNTIiwic2VjcmV0V29yZCI6IjEwOC4xMTQuMTIyLjEyMS4xMDUuMTIyLjEyMS4xMDMuMTE1LjEwNiJ9', '1541822400000', 0, '1550030400000'),
+(11, 19, 'lurisj', 'eyJ3b3JkIjoiJDJiJDA1JE14ZmV0YXEzUG1nQmh1dThMMG1VWnVVcG1tZzRCQTB5TEh3MW4wbTY1RG8wTFV1SnVRcGwuIiwic2VjcmV0V29yZCI6IjU1LjEwMC4xMDYuOTguMTIxLjQ5LjU0LjEyMi4xMTguMTE1In0=', '1541822400000', 0, '1550030400000'),
+(12, 19, 'leurisj', 'eyJ3b3JkIjoiJDJiJDA0JGswOFB1emJvSkhQSG9vcjVvUFhTN09ZRXgxZzdjUWtpN2xJOEM5bW9vajhYTnVySDlYd255Iiwic2VjcmV0V29yZCI6IjUxLjEyMC4xMTcuNTAuOTcuNTQuMTAzLjEyMi4xMDAuNTMifQ==', '1541822400000', 0, '1550030400000'),
+(13, 19, 'leurisj2', 'eyJ3b3JkIjoiJDJiJDA0JHpldlFERU51Y3VxWWFvMGUwUUFFSXU0cXZZdUlMaVNiZVdSV3VIQjViTXdabi9aUW41ekcuIiwic2VjcmV0V29yZCI6IjEwMC4xMDcuMTE5LjEwOS40OC41Ny4xMTQuMTA2LjUxLjQ4In0=', '1541822400000', 0, '1550030400000'),
+(14, 19, 'leurisj3', 'eyJ3b3JkIjoiJDJiJDEwJHB6NEhEb2liNU9Da0ZXQ1dhM3ZodC51ZjlYY1AzaENleEpPYTBNcHhISDNZbzBxMWF1V2VpIiwic2VjcmV0V29yZCI6IjExNi4xMTguMTIyLjExMi4xMDcuMTAxLjEwMS4xMDUuMTAyLjExOSJ9', '1542686400000', 1, '1550030400000');
 
 --
 -- Índices para tablas volcadas
@@ -145,6 +158,12 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `username` (`userName`,`email`);
 
 --
+-- Indices de la tabla `usersHistory`
+--
+ALTER TABLE `usersHistory`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -162,12 +181,17 @@ ALTER TABLE `casos`
 -- AUTO_INCREMENT de la tabla `session`
 --
 ALTER TABLE `session`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 --
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+--
+-- AUTO_INCREMENT de la tabla `usersHistory`
+--
+ALTER TABLE `usersHistory`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

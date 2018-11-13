@@ -6,6 +6,7 @@ const deleteUser = require("./functions/user").deleteUser
 const login = require("./functions/user").login
 const logout = require("./functions/user").logout
 const changePass = require("./functions/user").changePass
+const changeCredentials = require("./functions/user").changeCredentials
 const registerCase = require("./functions/case").registerCase
 const uploadFile = require("./functions/case").uploadFile
 const getCases = require("./functions/case").getCases
@@ -42,6 +43,7 @@ const validateUser = async (req, res, next) => {
   && req.originalUrl != '/registerUser' 
   && req.originalUrl != '/changePass' 
   && req.originalUrl != '/uploadFile' 
+  && req.originalUrl != '/changeCredentials' 
   && req.originalUrl != '/download'){
     if(req.method == 'POST'){
       token = req.body.token
@@ -51,7 +53,7 @@ const validateUser = async (req, res, next) => {
     const userInfo = await getUserByToken(token)
     if(!userInfo || userInfo == []){
       console.log("No esta loggeado")
-      return res.json({ status: 400, message: "Su token ha expirado", succes: false })
+      return res.json({ status: 405, message: "Su token ha expirado", succes: false })
     }
     console.log("userInfo: ", userInfo)
     console.log((req.originalUrl == '/registerUser' || req.originalUrl.includes('/getUsers')) && userInfo.type != 1)
@@ -102,6 +104,8 @@ app.post("/deleteUser", deleteUser)
 app.post("/changeStatus", changeStatus)
 
 app.post("/changePass", changePass)
+
+app.post("/changeCredentials", changeCredentials)
 
 app.get('/getUserData', function(req, res){
   return res.json({ status: 200, message: "Datos Consultados Exitosamente", succes: true, data: req.body.userInfo })

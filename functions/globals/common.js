@@ -7,7 +7,7 @@ function getUserByToken(token) {
       user: 'root',
       password: '',
       database: 'csc',
-      port: '3001'
+      
     });
     connection.query('SELECT * FROM session WHERE session.token = ?',
       token, function (error, result, fields) {
@@ -46,7 +46,7 @@ function getUserByUserName(userNameSent) {
       user: 'root',
       password: '',
       database: 'csc',
-      port: '3001'
+      
     });
     connection.query('SELECT * FROM users WHERE users.userName = ?',
       userNameSent, function (error, result, fields) {
@@ -73,7 +73,7 @@ function getUserByAttrib(attrib, value) {
       user: 'root',
       password: '',
       database: 'csc',
-      port: '3001'
+      
     });
     connection.query(`SELECT * FROM users WHERE ${attrib} = ?`,
       value, function (error, result, fields) {
@@ -100,7 +100,7 @@ function getUserHistory(userID) {
       user: 'root',
       password: '',
       database: 'csc',
-      port: '3001'
+      
     });
     connection.query(`SELECT * FROM usersHistory WHERE user = ? AND active = 1`,
     userID, function (error, result, fields) {
@@ -127,7 +127,7 @@ function getUserAllHistory(userID) {
       user: 'root',
       password: '',
       database: 'csc',
-      port: '3001'
+      
     });
     connection.query(`SELECT * FROM usersHistory WHERE user = ?`,
     userID, function (error, result, fields) {
@@ -155,7 +155,7 @@ function createSession(userID) {
       user: 'root',
       password: '',
       database: 'csc',
-      port: '3001'
+      
     });
     connection.query('INSERT INTO session (token, user) VALUES?', [values],
       function (error, result) {
@@ -178,7 +178,7 @@ function searchSession(userID) {
       user: 'root',
       password: '',
       database: 'csc',
-      port: '3001'
+      
     });
     connection.query('SELECT * FROM session WHERE session.user = ?',
       userID, function (error, result, fields) {
@@ -204,7 +204,7 @@ function updateSessionData(userName, userID, pass){
       user: 'root',
       password: '',
       database: 'csc',
-      port: '3001'
+      
     });
     connection.query('UPDATE users SET userName = ?, pass = ? WHERE id=?', 
     [userName, pass, userID], function (error, result, fields) {

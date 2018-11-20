@@ -11,7 +11,7 @@ exports.registerCase = async (req, res) => {
     host: 'localhost',
     user: 'root',
     database: 'csc',
-    port: '3001'
+    
   })
   const date = new Date().setHours(0, 0, 0, 0)
   const values = [[null, asunto, descripcion, date, date, userInfo.id, userInfo.userName, null, null, 'PENDIENTE', file, type]]
@@ -40,7 +40,7 @@ exports.modifyCase = async (req, res) => {
     host: 'localhost',
     user: 'root',
     database: 'csc',
-    port: '3001'
+    
   })
   const date = new Date().setHours(0, 0, 0, 0)
   const values = [[asunto, descripcion, date, type, idCaso]]
@@ -64,7 +64,7 @@ exports.changeStatus = async (req, res) => {
     host: 'localhost',
     user: 'root',
     database: 'csc',
-    port: '3001'
+    
   })
   const date = new Date().setHours(0, 0, 0, 0)
   connection.query('UPDATE casos SET status=? WHERE idCaso=?', 
@@ -86,7 +86,7 @@ exports.asignOperator = async (req, res) => {
     host: 'localhost',
     user: 'root',
     database: 'csc',
-    port: '3001'
+    
   })
   const userInfo = await getUserByAttrib('id', idOperador)
   const values = [idOperador, userInfo[0].userName, idCaso]
@@ -109,7 +109,7 @@ exports.getCases = async (req, res) => {
     host: 'localhost',
     user: 'root',
     database: 'csc',
-    port: '3001'
+    
   })
   switch (userInfo.type) {
     case 1:

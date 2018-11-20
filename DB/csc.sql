@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 13-11-2018 a las 11:24:07
+-- Tiempo de generación: 20-11-2018 a las 05:48:46
 -- Versión del servidor: 10.1.13-MariaDB
 -- Versión de PHP: 5.6.20
 
@@ -23,16 +23,23 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `adjuntos`
+-- Estructura de tabla para la tabla `backup`
 --
 
-CREATE TABLE `adjuntos` (
-  `idAdjunto` int(11) NOT NULL,
-  `fileName` varchar(30) NOT NULL,
-  `type` varchar(5) NOT NULL,
-  `user` int(10) UNSIGNED NOT NULL,
-  `caso` int(10) UNSIGNED NOT NULL
+CREATE TABLE `backup` (
+  `id` int(11) NOT NULL,
+  `active` int(11) NOT NULL,
+  `nextBackup` varchar(30) NOT NULL,
+  `lastBackup` varchar(30) DEFAULT NULL,
+  `time` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `backup`
+--
+
+INSERT INTO `backup` (`id`, `active`, `nextBackup`, `lastBackup`, `time`) VALUES
+(4, 1, '1542772800000', '1542600000000', 1);
 
 -- --------------------------------------------------------
 
@@ -55,6 +62,13 @@ CREATE TABLE `casos` (
   `type` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Volcado de datos para la tabla `casos`
+--
+
+INSERT INTO `casos` (`idCaso`, `asunto`, `descripcion`, `f_apertura`, `f_mod`, `user`, `userName`, `operador`, `operadorName`, `status`, `file`, `type`) VALUES
+(1, 'Prueba', 'akpfnaodmdasd', 1542168000000, 1542168000000, 17, 'jleodany', 20, 'dparra', 'PENDIENTE', 0, 'Requerimiento');
+
 -- --------------------------------------------------------
 
 --
@@ -72,7 +86,7 @@ CREATE TABLE `session` (
 --
 
 INSERT INTO `session` (`id`, `token`, `user`) VALUES
-(11, '1542082617772', 4);
+(16, '1542689267326', 17);
 
 -- --------------------------------------------------------
 
@@ -97,7 +111,8 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `userName`, `pass`, `firstName`, `lastName`, `email`, `type`) VALUES
 (17, 'jleodany', 'eyJ3b3JkIjoiJDJiJDEwJHZQMndtb20uUG01WWVwZ2RGOVYuN3VXbm9qY2IxVXRTNnJHenVVU2tMYXVPYUVPZnBQSGEuIiwic2VjcmV0V29yZCI6Ijk4Ljk4LjEwNi4xMDguMTExLjExMS4xMDguNTcuMTIxLjEwMiJ9', 'Jose', 'Ramirez', 'joseleodany@gmail.com', 1),
 (18, 'levij', 'eyJ3b3JkIjoiJDJiJDA3JGN4SGRsV2lKUzR5WlRLa0UzMS9wNi5FWkNGem00WEV4d1h5REtaRVA1Li5pSE1pTnZqQ1pHIiwic2VjcmV0V29yZCI6IjEyMS4xMDIuMTE2LjUyLjEwMC4xMDAuMTAxLjU0LjU3LjExNCJ9', 'Levi', 'Ramirez', 'leviramirez@gmail.com', 3),
-(19, 'leurisj3', 'eyJ3b3JkIjoiJDJiJDEwJHB6NEhEb2liNU9Da0ZXQ1dhM3ZodC51ZjlYY1AzaENleEpPYTBNcHhISDNZbzBxMWF1V2VpIiwic2VjcmV0V29yZCI6IjExNi4xMTguMTIyLjExMi4xMDcuMTAxLjEwMS4xMDUuMTAyLjExOSJ9', 'Leuris', 'Ramirez', 'leurisramirez@gmail.com', 2);
+(19, 'leurisj3', 'eyJ3b3JkIjoiJDJiJDEwJHB6NEhEb2liNU9Da0ZXQ1dhM3ZodC51ZjlYY1AzaENleEpPYTBNcHhISDNZbzBxMWF1V2VpIiwic2VjcmV0V29yZCI6IjExNi4xMTguMTIyLjExMi4xMDcuMTAxLjEwMS4xMDUuMTAyLjExOSJ9', 'Leuris', 'Ramirez', 'leurisramirez@gmail.com', 2),
+(20, 'dparra', 'eyJ3b3JkIjoiJDJiJDA0JEM3blJyTHBlY1JjQ1E1NFowQ1F0cmVWSVh5YlJJSmc0WTg2c0xhQThGR1VtZldGQ2tERzQ2Iiwic2VjcmV0V29yZCI6IjEwNC4xMTIuMTA2LjEwNS40OS41Ni4xMjAuOTkuMTE3Ljk4In0=', 'Diego', 'Parra', 'dparra26@gmail.com', 2);
 
 -- --------------------------------------------------------
 
@@ -126,17 +141,18 @@ INSERT INTO `usersHistory` (`id`, `user`, `userName`, `pass`, `createdAt`, `acti
 (11, 19, 'lurisj', 'eyJ3b3JkIjoiJDJiJDA1JE14ZmV0YXEzUG1nQmh1dThMMG1VWnVVcG1tZzRCQTB5TEh3MW4wbTY1RG8wTFV1SnVRcGwuIiwic2VjcmV0V29yZCI6IjU1LjEwMC4xMDYuOTguMTIxLjQ5LjU0LjEyMi4xMTguMTE1In0=', '1541822400000', 0, '1550030400000'),
 (12, 19, 'leurisj', 'eyJ3b3JkIjoiJDJiJDA0JGswOFB1emJvSkhQSG9vcjVvUFhTN09ZRXgxZzdjUWtpN2xJOEM5bW9vajhYTnVySDlYd255Iiwic2VjcmV0V29yZCI6IjUxLjEyMC4xMTcuNTAuOTcuNTQuMTAzLjEyMi4xMDAuNTMifQ==', '1541822400000', 0, '1550030400000'),
 (13, 19, 'leurisj2', 'eyJ3b3JkIjoiJDJiJDA0JHpldlFERU51Y3VxWWFvMGUwUUFFSXU0cXZZdUlMaVNiZVdSV3VIQjViTXdabi9aUW41ekcuIiwic2VjcmV0V29yZCI6IjEwMC4xMDcuMTE5LjEwOS40OC41Ny4xMTQuMTA2LjUxLjQ4In0=', '1541822400000', 0, '1550030400000'),
-(14, 19, 'leurisj3', 'eyJ3b3JkIjoiJDJiJDEwJHB6NEhEb2liNU9Da0ZXQ1dhM3ZodC51ZjlYY1AzaENleEpPYTBNcHhISDNZbzBxMWF1V2VpIiwic2VjcmV0V29yZCI6IjExNi4xMTguMTIyLjExMi4xMDcuMTAxLjEwMS4xMDUuMTAyLjExOSJ9', '1542686400000', 1, '1550030400000');
+(14, 19, 'leurisj3', 'eyJ3b3JkIjoiJDJiJDEwJHB6NEhEb2liNU9Da0ZXQ1dhM3ZodC51ZjlYY1AzaENleEpPYTBNcHhISDNZbzBxMWF1V2VpIiwic2VjcmV0V29yZCI6IjExNi4xMTguMTIyLjExMi4xMDcuMTAxLjEwMS4xMDUuMTAyLjExOSJ9', '1542686400000', 1, '1550030400000'),
+(15, 20, 'dparra', 'eyJ3b3JkIjoiJDJiJDA0JEM3blJyTHBlY1JjQ1E1NFowQ1F0cmVWSVh5YlJJSmc0WTg2c0xhQThGR1VtZldGQ2tERzQ2Iiwic2VjcmV0V29yZCI6IjEwNC4xMTIuMTA2LjEwNS40OS41Ni4xMjAuOTkuMTE3Ljk4In0=', '1542772800000', 1, '1550116800000');
 
 --
 -- Índices para tablas volcadas
 --
 
 --
--- Indices de la tabla `adjuntos`
+-- Indices de la tabla `backup`
 --
-ALTER TABLE `adjuntos`
-  ADD PRIMARY KEY (`idAdjunto`);
+ALTER TABLE `backup`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `casos`
@@ -168,30 +184,30 @@ ALTER TABLE `usersHistory`
 --
 
 --
--- AUTO_INCREMENT de la tabla `adjuntos`
+-- AUTO_INCREMENT de la tabla `backup`
 --
-ALTER TABLE `adjuntos`
-  MODIFY `idAdjunto` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `backup`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `casos`
 --
 ALTER TABLE `casos`
-  MODIFY `idCaso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=391;
+  MODIFY `idCaso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `session`
 --
 ALTER TABLE `session`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 --
 -- AUTO_INCREMENT de la tabla `usersHistory`
 --
 ALTER TABLE `usersHistory`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

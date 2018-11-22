@@ -40,7 +40,7 @@ exports.registerUser = async/*<--- importante para usar 'await'*/(req, res) => {
       const connection = mysql.createConnection({
         host: 'localhost',
         user: 'root',
-        database: 'csc',
+        database: 'csc', port: 3001
         
       });
       connection.connect(function (error) {
@@ -120,7 +120,7 @@ exports.modifyUser = async/*<--- importante para usar 'await'*/(req, res) => {
     const connection = mysql.createConnection({
       host: 'localhost',
       user: 'root',
-      database: 'csc',
+      database: 'csc', port: 3001
       
     });
     connection.connect(function (error) {
@@ -153,7 +153,7 @@ exports.getUsers = async (req, res) => {
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'csc',
+    database: 'csc', port: 3001
     
   });
   connection.query('SELECT * from users', function (error, result, fields) {
@@ -174,7 +174,7 @@ exports.deleteUser = async (req, res) => {
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'csc',
+    database: 'csc', port: 3001
     
   });
   const dbUser = await getUserByAttrib('id', id)
@@ -304,7 +304,7 @@ exports.logout = async (req, res) => {
   const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    database: 'csc',
+    database: 'csc', port: 3001
     
   })
   console.log(token)

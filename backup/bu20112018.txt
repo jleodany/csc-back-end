@@ -19,6 +19,7 @@ id, user, userName, createdAt, active, expires
 15, 20, dparra, 1542772800000, 1, 1550116800000
 session: 
 id, token, user
+17, 1542736530252, 17
 backup: 
 id, active, nextBackup, lastBackup
-4, 1, 1542600000000, null
+4, 1, 1542600000000, 1542600000000

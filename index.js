@@ -13,6 +13,7 @@ const getCases = require("./functions/case").getCases
 const modifyCase = require("./functions/case").modifyCase
 const changeStatus = require("./functions/case").changeStatus
 const asignOperator = require("./functions/case").asignOperator
+const evaluate = require("./functions/case").evaluate
 const setBackUp = require("./functions/backup").setBackUp
 const getBackupData = require("./functions/backup").getBackupData
 const makeBackUp = require("./functions/backup").makeBackUp
@@ -42,7 +43,7 @@ const validateUser = async (req, res, next) => {
   console.log('req.method: ', req.method)
   console.log('req.url: ', req.originalUrl)
   let token
-  await makeBackUp()
+  // await makeBackUp()
   if (req.originalUrl != '/login'
     && req.originalUrl != '/registerUser'
     && req.originalUrl != '/changePass'
@@ -94,6 +95,8 @@ app.post("/asignOperator", asignOperator)
 app.post("/modifyUser", modifyUser)
 
 app.post("/modifyCase", modifyCase)
+
+app.post("/evaluate", evaluate)
 
 app.post("/uploadFile", upload.single('file'), uploadFile)
 

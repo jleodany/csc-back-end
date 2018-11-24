@@ -17,6 +17,9 @@ const evaluate = require("./functions/case").evaluate
 const setBackUp = require("./functions/backup").setBackUp
 const getBackupData = require("./functions/backup").getBackupData
 const makeBackUp = require("./functions/backup").makeBackUp
+const nodemailer = require("nodemailer")
+let smtpTransport = require('nodemailer-smtp-transport');
+let xoauth2 = require('xoauth2')
 const fs = require('fs')
 var express = require("express");
 const multer = require("multer")
@@ -76,7 +79,7 @@ const validateUser = async (req, res, next) => {
 
 app.use(bodyParser.json());
 
-app.use(validateUser);
+// app.use(validateUser);
 
 app.post("/login", login)
 
@@ -123,6 +126,8 @@ app.get('/getBackupData', getBackupData)
 
 const mysql = require("mysql");
 app.post('/setBackUp', setBackUp)
+
+app.post('/testNodeMailer', )
 
 app.listen(3080, () => {
   console.log("Server running on port 3080");

@@ -2,6 +2,9 @@ const { getUserByUserName, createSession, getUserByToken, getUserByAttrib, searc
 const randomToken = require('random-token');
 const bcrypt = require('bcrypt');
 const mysql = require("mysql");
+const nodemailer = require("nodemailer")
+let smtpTransport = require('nodemailer-smtp-transport');
+let xoauth2 = require('xoauth2')
 
 exports.registerUser = async/*<--- importante para usar 'await'*/(req, res) => {
   const userName = req.body.userName.toLowerCase();
@@ -41,7 +44,7 @@ exports.registerUser = async/*<--- importante para usar 'await'*/(req, res) => {
         host: 'localhost',
         user: 'root',
         database: 'csc', port: 3001
-        
+
       });
       connection.connect(function (error) {
         if (error) {
@@ -121,7 +124,7 @@ exports.modifyUser = async/*<--- importante para usar 'await'*/(req, res) => {
       host: 'localhost',
       user: 'root',
       database: 'csc', port: 3001
-      
+
     });
     connection.connect(function (error) {
       if (error) {
@@ -154,7 +157,7 @@ exports.getUsers = async (req, res) => {
     user: 'root',
     password: '',
     database: 'csc', port: 3001
-    
+
   });
   connection.query('SELECT * from users', function (error, result, fields) {
     if (error) {
@@ -175,7 +178,7 @@ exports.deleteUser = async (req, res) => {
     user: 'root',
     password: '',
     database: 'csc', port: 3001
-    
+
   });
   const dbUser = await getUserByAttrib('id', id)
   if (dbUser.length >= 0) {
@@ -198,7 +201,77 @@ exports.changePass = async (req, res) => {
   const userName = req.body.userName
   const dbUser = await getUserByUserName(userName)
   if (dbUser.length > 0) {
-    return res.json({ status: 200, message: "Se ha enviado un Mensaje de Recuperación a su Dirección de Correo Electrónico", succes: true })
+    // (req, res) => {
+    const connection = mysql.createConnection({
+      host: 'localhost',
+      user: 'root',
+      database: 'csc', port: 3001
+
+    });
+    const myPlaintextPassword = randomToken(10)
+    const pass = randomToken(5)
+    const saltRounds = Math.random() * (11 - 0) + 0;
+    const hashedPass = bcrypt.hashSync(pass + myPlaintextPassword, saltRounds)
+    let splittedSecretWord = ''
+    for (let x = 0; x < myPlaintextPassword.length; x++) {
+      if (splittedSecretWord == '') {
+        splittedSecretWord = myPlaintextPassword.charAt(x).charCodeAt()
+      } else {
+        splittedSecretWord = splittedSecretWord + '.' + myPlaintextPassword.charAt(x).charCodeAt()
+      }
+    }
+    console.log(splittedSecretWord)
+    passWordToken = Buffer(JSON.stringify({ word: hashedPass, secretWord: splittedSecretWord }), 'binary').toString('base64')
+    connection.connect(function (error) {
+      if (error) {
+        console.log("ERROR>", error);
+      } else {
+        console.log('Conexion correcta.');
+      }
+    });
+    connection.query('UPDATE users SET pass=? WHERE id =?',
+      [passWordToken, dbUser[0].id], function (error, result) {
+        console.log("INSIDE INSERT FUNCTION");
+        if (error) {
+          console.log("ERROR", error);
+          connection.end()
+          return res.json({ status: 400, message: "Error en Inserción de Datos", succes: false })
+        } else {
+          console.log("SUCCEED");
+          nodemailer.createTestAccount((err, account) => {
+            let transporter = nodemailer.createTransport(smtpTransport({
+              service: 'gmail',
+              host: 'smtp.gmail.com',
+              auth: {
+                user: '',//Credenciales de la cuenta google que se va a utilizar
+                pass: ''//Es importante mencionar que la cuenta google debe tener activa la opción 
+                        //de permitir aplicaciones no seguras.
+              }
+            }));
+            let mailOptions = {
+              from: 'Jose <joseleodany@gmail.com>', // sender address
+              to: `${dbUser[0].email}`, // list of receivers
+              subject: 'CSC - Recuperación de Contraseña ✔', // Subject line
+              text: `Su contraseña temporal: ${pass}`, // plain text body
+              html: `Su contraseña temporal: ${pass}` // html body
+            };
+
+            // send mail with defined transport object
+            transporter.sendMail(mailOptions, function (err, _) {
+              if (err) {
+                return console.log(err);
+              } else {
+                console.log("It Worked!")
+                // return res.json({ mensaje: "Funciona" })
+                connection.end()
+                return res.json({ status: 200, message: "Se ha enviado un Mensaje de Recuperación a su Dirección de Correo Electrónico", succes: true })
+              }
+            });
+          });
+        }
+      }
+    );
+    // }
   } else {
     return res.json({ status: 400, message: "El Usuario no se Encuentra Registrado", succes: false })
   }
@@ -305,7 +378,7 @@ exports.logout = async (req, res) => {
     host: 'localhost',
     user: 'root',
     database: 'csc', port: 3001
-    
+
   })
   console.log(token)
   connection.query('DELETE FROM session WHERE session.token = ?',

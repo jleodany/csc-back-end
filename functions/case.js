@@ -135,7 +135,7 @@ exports.getCases = async (req, res) => {
     database: 'csc', port: 3001
     
   })
-  switch (userInfo.type) {
+  switch (userInfo) {
     case 1:
       console.log("Admin")
       connection.query(params ? `SELECT * FROM casos WHERE ${attrib}=?` : `SELECT * FROM casos`, value,

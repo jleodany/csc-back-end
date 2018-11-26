@@ -1,4 +1,5 @@
 const { getUserByUserName, createSession, getUserByToken, getUserByAttrib, searchSession, getUserHistory, getUserAllHistory, updateSessionData } = require('./globals/common')
+const { sendMail } = require('./mail')
 const randomToken = require('random-token');
 const bcrypt = require('bcrypt');
 const mysql = require("mysql");
@@ -75,6 +76,9 @@ exports.registerUser = async/*<--- importante para usar 'await'*/(req, res) => {
                   return res.json({ status: 400, message: "Error en Inserción de Datos", succes: false })
                 } else {
                   console.log("SUCCEED");
+                  const subject = `Registro en Sistema de CSC`
+                  const texto = `Su Usuario: <b>${userName}</b><br>Y su Contraseña: <b>${pass}</b>`
+                  sendMail(email, subject, texto)
                   connection.end()
                   return res.json({ status: 200, message: "Usuario Registrado Exitosamente", succes: true });
                 }
@@ -229,48 +233,47 @@ exports.changePass = async (req, res) => {
         console.log('Conexion correcta.');
       }
     });
-    connection.query('UPDATE users SET pass=? WHERE id =?',
-      [passWordToken, dbUser[0].id], function (error, result) {
-        console.log("INSIDE INSERT FUNCTION");
-        if (error) {
-          console.log("ERROR", error);
-          connection.end()
-          return res.json({ status: 400, message: "Error en Inserción de Datos", succes: false })
-        } else {
-          console.log("SUCCEED");
-          nodemailer.createTestAccount((err, account) => {
-            let transporter = nodemailer.createTransport(smtpTransport({
-              service: 'gmail',
-              host: 'smtp.gmail.com',
-              auth: {
-                user: '',//Credenciales de la cuenta google que se va a utilizar
-                pass: ''//Es importante mencionar que la cuenta google debe tener activa la opción 
-                        //de permitir aplicaciones no seguras.
-              }
-            }));
-            let mailOptions = {
-              from: 'Jose <joseleodany@gmail.com>', // sender address
-              to: `${dbUser[0].email}`, // list of receivers
-              subject: 'CSC - Recuperación de Contraseña ✔', // Subject line
-              text: `Su contraseña temporal: ${pass}`, // plain text body
-              html: `Su contraseña temporal: ${pass}` // html body
-            };
+    nodemailer.createTestAccount((err, account) => {
+      let transporter = nodemailer.createTransport(smtpTransport({
+        service: 'gmail',
+        host: 'smtp.gmail.com',
+        auth: {
+          user: 'supmailcsc@gmail.com',//Credenciales de la cuenta google que se va a utilizar
+          pass: 'cscAdmin9'//Es importante mencionar que la cuenta google debe tener activa la opción 
+                  //de permitir aplicaciones no seguras.
+        }
+      }));
+      let mailOptions = {
+        from: 'Soporte CSC <supmailcsc@gmail.com>', // sender address
+        to: `${dbUser[0].email}`, // list of receivers
+        subject: 'CSC - Recuperación de Contraseña ✔', // Subject line
+        text: `Su contraseña temporal: ${pass}`, // plain text body
+        html: `Su contraseña temporal: ${pass}` // html body
+      };
 
-            // send mail with defined transport object
-            transporter.sendMail(mailOptions, function (err, _) {
-              if (err) {
-                return console.log(err);
+      // send mail with defined transport object
+      transporter.sendMail(mailOptions, function (err, _) {
+        if (err) {
+          return res.json({ status: 400, message: "Ha Ocurrido un Error Enviando el Correo Electrónico, Verifique su Conexión a Internet", succes: true })
+        } else {
+          console.log("It Worked!")
+          connection.query('UPDATE users SET pass=? WHERE id =?',
+            [passWordToken, dbUser[0].id], function (error, result) {
+              console.log("INSIDE INSERT FUNCTION");
+              if (error) {
+                console.log("ERROR", error);
+                connection.end()
+                return res.json({ status: 400, message: "Error en Inserción de Datos", succes: false })
               } else {
-                console.log("It Worked!")
-                // return res.json({ mensaje: "Funciona" })
+                console.log("SUCCEED");
                 connection.end()
                 return res.json({ status: 200, message: "Se ha enviado un Mensaje de Recuperación a su Dirección de Correo Electrónico", succes: true })
               }
-            });
-          });
+            }
+          );
         }
-      }
-    );
+      });
+    });
     // }
   } else {
     return res.json({ status: 400, message: "El Usuario no se Encuentra Registrado", succes: false })
@@ -287,7 +290,23 @@ exports.login = async (req, res) => {
     const userID = dbUser[0].id
     const session = await searchSession(userID)
     if (session.length > 0) {
-      return res.json({ status: 400, message: "El Usuario ya Posee una Sesión Activa", succes: false })
+      const connection = mysql.createConnection({
+        host: 'localhost',
+        user: 'root',
+        database: 'csc', port: 3001
+        
+      })
+      await connection.query(`DELETE FROM session WHERE id=?`, session[0].id,
+        function (error, result) {
+          // if (error) {
+          //   console.log(error)
+          //   return res.json({ status: 400, message: "Ocurrió un Error en la Consulta", succes: false })
+          // } else {
+          //   connection.end()
+          //   return res.json({ status: 200, message: "Consulta Exitosa", succes: true, data: result });
+          // }
+        })
+      // return res.json({ status: 400, message: "El Usuario ya Posee una Sesión Activa", succes: false })
     }
     const passField = JSON.parse(new Buffer(dbUser[0].pass, 'base64').toString("ascii"))
     let myPlaintextPassword = ''

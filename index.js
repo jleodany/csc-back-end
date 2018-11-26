@@ -79,7 +79,7 @@ const validateUser = async (req, res, next) => {
 
 app.use(bodyParser.json());
 
-// app.use(validateUser);
+app.use(validateUser);
 
 app.post("/login", login)
 

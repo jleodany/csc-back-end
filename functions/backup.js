@@ -11,7 +11,7 @@ exports.setBackUp = async (req, res) => {
       host: 'localhost',
       user: 'root',
       password: '',
-      database: 'csc', port: 3001
+      database: 'csc', port: 3306
       
     });
     connection.query('SELECT * FROM backup', function (error, result, fields) {
@@ -47,7 +47,7 @@ exports.getBackupData = async (req, res) => {
       host: 'localhost',
       user: 'root',
       password: '',
-      database: 'csc', port: 3001
+      database: 'csc', port: 3306
       
     });
     connection.query('SELECT * FROM backup', function (error, result, fields) {
@@ -73,7 +73,7 @@ function makeBackUp() {
       host: 'localhost',
       user: 'root',
       password: '',
-      database: 'csc', port: 3001
+      database: 'csc', port: 3306
       
     });
     let arrayToFile = []

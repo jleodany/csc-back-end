@@ -44,7 +44,7 @@ exports.registerUser = async/*<--- importante para usar 'await'*/(req, res) => {
       const connection = mysql.createConnection({
         host: 'localhost',
         user: 'root',
-        database: 'csc', port: 3001
+        database: 'csc', port: 3306
 
       });
       connection.connect(function (error) {
@@ -127,7 +127,7 @@ exports.modifyUser = async/*<--- importante para usar 'await'*/(req, res) => {
     const connection = mysql.createConnection({
       host: 'localhost',
       user: 'root',
-      database: 'csc', port: 3001
+      database: 'csc', port: 3306
 
     });
     connection.connect(function (error) {
@@ -160,7 +160,7 @@ exports.getUsers = async (req, res) => {
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'csc', port: 3001
+    database: 'csc', port: 3306
 
   });
   connection.query('SELECT * from users', function (error, result, fields) {
@@ -181,7 +181,7 @@ exports.deleteUser = async (req, res) => {
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'csc', port: 3001
+    database: 'csc', port: 3306
 
   });
   const dbUser = await getUserByAttrib('id', id)
@@ -209,7 +209,7 @@ exports.changePass = async (req, res) => {
     const connection = mysql.createConnection({
       host: 'localhost',
       user: 'root',
-      database: 'csc', port: 3001
+      database: 'csc', port: 3306
 
     });
     const myPlaintextPassword = randomToken(10)
@@ -293,7 +293,7 @@ exports.login = async (req, res) => {
       const connection = mysql.createConnection({
         host: 'localhost',
         user: 'root',
-        database: 'csc', port: 3001
+        database: 'csc', port: 3306
         
       })
       await connection.query(`DELETE FROM session WHERE id=?`, session[0].id,
@@ -396,7 +396,7 @@ exports.logout = async (req, res) => {
   const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    database: 'csc', port: 3001
+    database: 'csc', port: 3306
 
   })
   console.log(token)

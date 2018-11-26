@@ -10,7 +10,7 @@ exports.registerCase = async (req, res) => {
   const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    database: 'csc', port: 3001
+    database: 'csc', port: 3306
     
   })
   const date = new Date().setHours(0, 0, 0, 0)
@@ -39,7 +39,7 @@ exports.modifyCase = async (req, res) => {
   const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    database: 'csc', port: 3001
+    database: 'csc', port: 3306
     
   })
   const date = new Date().setHours(0, 0, 0, 0)
@@ -63,7 +63,7 @@ exports.evaluate = async (req, res) => {
   const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    database: 'csc', port: 3001
+    database: 'csc', port: 3306
     
   })
   const date = new Date().setHours(0, 0, 0, 0)
@@ -87,7 +87,7 @@ exports.changeStatus = async (req, res) => {
   const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    database: 'csc', port: 3001
+    database: 'csc', port: 3306
     
   })
   const date = new Date().setHours(0, 0, 0, 0)
@@ -109,7 +109,7 @@ exports.asignOperator = async (req, res) => {
   const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    database: 'csc', port: 3001
+    database: 'csc', port: 3306
     
   })
   const userInfo = await getUserByAttrib('id', idOperador)
@@ -132,7 +132,7 @@ exports.getCases = async (req, res) => {
   const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    database: 'csc', port: 3001
+    database: 'csc', port: 3306
     
   })
   switch (userInfo) {

@@ -9,7 +9,15 @@
   "author": "csc-team",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^3.0.2",
+    "body-parser": "^1.18.3",
     "express": "^4.16.3",
-    "mysql": "^2.16.0"
+    "multer": "^1.4.1",
+    "mysql": "^2.16.0",
+    "node-pre-gyp": "^0.11.0",
+    "nodemailer": "^4.7.0",
+    "nodemailer-smtp-transport": "^2.7.4",
+    "random-token": "^0.0.8",
+    "xoauth2": "^1.2.0"
   }
 }

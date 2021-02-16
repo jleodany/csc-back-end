@@ -1,0 +1,26 @@
+Users: 
+id, userName, firstName, lastName, email, type
+17, jleodany, Jose, Ramirez, joseleodany@gmail.com, 1
+18, levij, Levi, Ramirez, leviramirez@gmail.com, 3
+19, leurisj3, Leuris, Ramirez, leurisramirez@gmail.com, 2
+20, dparra, Diego, Parra, dparra26@gmail.com, 2
+Casos: 
+idCaso, asunto, descripcion, f_apertura, f_mod, user, userName, operador, operadorName, status, file, type
+1, Prueba, akpfnaodmdasd, 1542168000000, 1542168000000, 17, jleodany, 20, dparra, PENDIENTE,0, Requerimiento
+usersHistory: 
+id, user, userName, createdAt, active, expires
+7, 17, jleodany, 1542686400000, 1, 1550030400000
+8, 18, levij, 1541822400000, 1, 1550030400000
+9, 19, lurisj, 1541822400000, 0, 1550030400000
+11, 19, lurisj, 1541822400000, 0, 1550030400000
+12, 19, leurisj, 1541822400000, 0, 1550030400000
+13, 19, leurisj2, 1541822400000, 0, 1550030400000
+14, 19, leurisj3, 1542686400000, 1, 1550030400000
+15, 20, dparra, 1542772800000, 1, 1550116800000
+session: 
+id, token, user
+11, 1542082617772, 4
+12, 1542670446907, 17
+backup: 
+id, active, nextBackup, lastBackup
+4, 1, 1542772800000, null
